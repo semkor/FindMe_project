@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Find me</title>
+    </head>
+    <body>
+        <div>
+            <div class="left">
+                <h1>Photo</h1>
+                <div>
+                    <button class ="btn">Send message</button>
+                </div>
+            </div>
+            <div class ="right">
+                <b style = >Styled text here</b>
+                </p>
+                <table>
+                    <tbody>
+                    <tr>
+                        <td><b>FirstName:</b> </td>
+                        <td><b>LastName:</b> </td>
+                        <td><b>Phone:</b> </td>
+                        <td><b>Country:</b> </td>
+                        <td><b>City:</b> </td>
+                        <td><b>Age:</b> </td>
+                        <td><b>Date Registered:</b> </td>
+                        <td><b>Date Last Active:</b> </td>
+                        <td><b>Relationship Status:</b> </td>
+                        <td><b>Religion:</b> </td>
+                        <td><b>School:</b> </td>
+                        <td><b>University:</b> </td>
+                    </tr>
+                    <tr>
+                        <td th:text="${userModel.firstName}"> - </td>
+                        <td th:text="${userModel.lastName}"> - </td>
+                        <td th:text="${userModel.phone}"> - </td>
+                        <td th:text="${userModel.country}"> - </td>
+                        <td th:text="${userModel.city}"> - </td>
+                        <td th:text="${userModel.age}"> - </td>
+                        <td th:text="${userModel.dateRegistered}"> - </td>
+                        <td th:text="${userModel.dateLastActive}"> - </td>
+                        <td th:text="${userModel.relationshipStatus}"> - </td>
+                        <td th:text="${userModel.religion}"> - </td>
+                        <td th:text="${userModel.school}"> - </td>
+                        <td th:text="${userModel.university}"> - </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+    <style>
+        .left {
+            float: left;
+            width: 200px;
+            height: 300px;
+            border-style: solid;
+        }
+        .right{
+            margin-left: 300px;
+        }
+        .btn{
+            margin-top: 250px;
+        }
+        tbody {
+            display:flex;
+        }
+        tr {
+            display:flex;
+            flex-direction: column;
+            flex-wrap:      wrap;
+        }
+        td {
+            height: 30px;
+            width: 160px;
+            align-content: center;
+        }
+    </style>
+</html>

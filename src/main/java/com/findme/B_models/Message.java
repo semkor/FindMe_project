@@ -50,7 +50,7 @@ public class Message {
     }
 
     @ManyToOne
-    @Column(name="USER_TO")
+    @JoinColumn(name="USER_TO")
     public User getUserTo() {
         return userTo;
     }

@@ -1,4 +1,4 @@
-package com.findme.E_dao;
+package com.findme.hw;
 
 import com.findme.B_models.User;
 import org.springframework.stereotype.Repository;

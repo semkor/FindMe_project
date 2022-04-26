@@ -1,4 +1,4 @@
-package com.findme.A_config;
+package com.findme.A1_config;
 
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
