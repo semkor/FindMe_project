@@ -1,6 +1,7 @@
-package com.findme.hw;
+package com.findme.D_service;
 
 import com.findme.B_models.User;
+import com.findme.E_dao.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,9 +31,4 @@ public class UserService {
     public void delete(long id){
         userDao.delete(id);
     }
-
-
-
-
-
 }
