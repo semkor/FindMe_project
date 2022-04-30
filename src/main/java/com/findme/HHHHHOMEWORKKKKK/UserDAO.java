@@ -1,10 +1,11 @@
-package com.findme.E_dao;
+package com.findme.HHHHHOMEWORKKKKK;
 
 import com.findme.B_models.User;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 @Repository
 @Transactional
@@ -32,4 +33,13 @@ public class UserDAO {
     public void delete(long id) {
         entityManager.remove(findById(id));
     }
+
+    //---------------------------------------------------------------------------------------------------------
+    public List<User> findBySql(String sql, String firstName, String secondName) {
+        return entityManager.createNativeQuery(sql,User.class)
+                .setParameter(1,firstName)
+                .setParameter(2,secondName)
+                .getResultList();
+    }
 }
+

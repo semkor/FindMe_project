@@ -1,6 +1,7 @@
 package com.findme.B_models;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 import java.util.List;
 
@@ -11,6 +12,7 @@ public class User {
     private String firstName;
     private String lastName;
     private String phone;
+    private String email;
     //TODO from existed data
     private String country;
     private String city;
@@ -35,10 +37,11 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String firstName, String lastName, String phone, String country, String city, Integer age, Date dateRegistered, Date dateLastActive, String relationshipStatus, String religion, String school, String university, List<Message> messagesSent, List<Message> messagesReceived, List<Post> postList) {
+    public User(Long id, String firstName, String lastName, String phone, String email,String country, String city, Integer age, Date dateRegistered, Date dateLastActive, String relationshipStatus, String religion, String school, String university, List<Message> messagesSent, List<Message> messagesReceived, List<Post> postList) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.email = email;
         this.phone = phone;
         this.country = country;
         this.city = city;
@@ -75,6 +78,11 @@ public class User {
     @Column(name="PHONE")
     public String getPhone() {
         return phone;
+    }
+
+    @Column(name="EMAIL")
+    public String getEmail() {
+        return email;
     }
 
     @Column(name="COUNTRY")
@@ -154,6 +162,10 @@ public class User {
         this.phone = phone;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public void setCountry(String country) {
         this.country = country;
     }
@@ -211,6 +223,7 @@ public class User {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
                 ", country='" + country + '\'' +
                 ", city='" + city + '\'' +
                 ", age=" + age +
