@@ -1,16 +1,12 @@
-package com.findme.HHHHHOMEWORKKKKK;
+package com.findme.C_controller;
 
 import com.findme.B_models.User;
-import com.findme.HHHHHOMEWORKKKKK.UserService;
+import com.findme.D_service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 @Controller
 public class UserController {
