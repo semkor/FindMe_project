@@ -1,4 +1,7 @@
-package com.findme.B_models;
+package com.findme.hw;
+
+import com.findme.B_models.Message;
+import com.findme.B_models.Post;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;

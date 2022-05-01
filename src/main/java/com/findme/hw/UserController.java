@@ -1,7 +1,5 @@
-package com.findme.C_controller;
+package com.findme.hw;
 
-import com.findme.B_models.User;
-import com.findme.D_service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

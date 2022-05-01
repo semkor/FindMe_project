@@ -1,7 +1,5 @@
-package com.findme.D_service;
+package com.findme.hw;
 
-import com.findme.B_models.User;
-import com.findme.E_dao.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
