@@ -15,11 +15,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Enumeration;
 
 
 @Controller
 public class UserController {
     private UserService userService;
+    private final String sessionLogin = "userId";
 
     @Autowired
     public UserController(UserService userService) {
@@ -88,22 +90,26 @@ public class UserController {
     public ResponseEntity<String> login(HttpSession session, HttpServletRequest request, HttpServletResponse response,
                                         @ModelAttribute User user){
 
-        User userBase = userService.validationLogin(user.getLogin(), user.getPassword());
-        if(userBase == null)
-            return new ResponseEntity<String>("Invalid login or password", HttpStatus.BAD_REQUEST);
-
-        Long sessionId = (Long) session.getAttribute("userId");
-        if (sessionId == null)
+        Long sessionId = (Long) session.getAttribute(sessionLogin);
+        if (sessionId == null){
+            User userBase = userService.validationLogin(user.getLogin(), user.getPassword());
+            if(userBase == null)
+                return new ResponseEntity<String>("Invalid login or password", HttpStatus.BAD_REQUEST);
             sessionId = userBase.getId();
-        session.setAttribute("userId",sessionId);
+        }
+
+        session.setAttribute(sessionLogin,sessionId);
 
         return new ResponseEntity<String>("User with this login exists", HttpStatus.OK);
     }
 
     @GetMapping(value="/logout")
     public ResponseEntity<String> logout(HttpSession session, @ModelAttribute User user){
+            if(session.getAttribute(sessionLogin) == null)
+                return new ResponseEntity<String>("Session is not opened", HttpStatus.BAD_REQUEST);
+
             session.invalidate();
-        return new ResponseEntity<String>("session is closed", HttpStatus.OK);
+        return new ResponseEntity<String>("Session is closed", HttpStatus.OK);
     }
 
     //----------------------------------------------- lesson5_hw -------------------------------------------------------
