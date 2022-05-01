@@ -1,7 +1,6 @@
-package com.findme.D_service;
+package com.findme.HHHHHOMEWORKKKKK;
 
 import com.findme.B_models.User;
-import com.findme.E_dao.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -19,6 +18,8 @@ public class UserService {
     //--------------------------------------------------------------------------------------------------------
     @Value("${sqlExecute.sqlPhoneEmail}")
     private String sqlPhoneEmail;
+    @Value("${sqlExecute.sqlLoginPassword}")
+    private String sqlLoginPassword;
 
     //---------------------------------------------------------------------------------------------------------
     public User findById(long id){
@@ -37,7 +38,7 @@ public class UserService {
         userDao.delete(id);
     }
 
-    //---------------------------------------------------------------------------------------------------------
+    //---------------------------------------------- lesson3 hw --------------------------------------------------------
 
     public String validation(String phone, String email) {
           String result = "ok";
@@ -54,5 +55,10 @@ public class UserService {
                         result = "This email exists in the database";
               }
           return  result;
+    }
+
+    //---------------------------------------------- lesson4 hw --------------------------------------------------------
+    public User validationLogin(String login, String password) {
+        return  userDao.findBySqlLogin(sqlLoginPassword,login,password);
     }
 }

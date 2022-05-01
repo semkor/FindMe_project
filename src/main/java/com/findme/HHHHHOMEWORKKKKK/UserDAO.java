@@ -1,9 +1,10 @@
-package com.findme.E_dao;
+package com.findme.HHHHHOMEWORKKKKK;
 
 import com.findme.B_models.User;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
@@ -34,12 +35,24 @@ public class UserDAO {
         entityManager.remove(findById(id));
     }
 
-    //---------------------------------------------------------------------------------------------------------
+    //--------------------------------------------- lesson3 hw ---------------------------------------------------------
     public List<User> findBySql(String sql, String firstName, String secondName) {
         return entityManager.createNativeQuery(sql,User.class)
                 .setParameter(1,firstName)
                 .setParameter(2,secondName)
                 .getResultList();
+    }
+
+    //--------------------------------------------- lesson4 hw ---------------------------------------------------------
+    public User findBySqlLogin(String sql, String login, String password) {
+        User user = null;
+        try {
+            user = (User) entityManager.createNativeQuery(sql, User.class)
+                    .setParameter(1, login)
+                    .setParameter(2, password)
+                    .getSingleResult();
+        } catch (NoResultException e) {}
+        return user;
     }
 }
 

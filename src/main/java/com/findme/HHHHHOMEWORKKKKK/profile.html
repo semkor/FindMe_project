@@ -4,6 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <title>Find me</title>
+        <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     </head>
     <body>
         <div>
@@ -50,6 +51,24 @@
                 </table>
             </div>
         </div>
+            <button th:id="btnExit">Выйти! </button>
+        <script>
+            $('#btnExit').click(function(){
+                $.ajax({
+                    type: "GET",
+                    url: "/logout",
+                    async: false,
+                    data: {
+                    },
+                    success: function() {
+                        alert("Session failed");
+                    },
+                    error: function error(xhr) {
+                        alert("Error");
+                    }
+                });
+            });
+        </script>
     </body>
     <style>
         .left {
@@ -60,6 +79,11 @@
         }
         .right{
             margin-left: 300px;
+        }
+        #btnExit{
+            margin-left: 250px;
+            width: 70px;
+            height: 30px;
         }
         .btn{
             margin-top: 250px;
@@ -79,21 +103,3 @@
         }
     </style>
 </html>
-
-
-// $("#exit").click(function(){
-//     $.ajax({
-//         type: "GET",
-//         url: "/test-ajax",
-//         data: {
-//         },
-//         success: function success() {
-//             debugger;
-//             alert("success_Exit!");
-//         },
-//         error: function error(xhr) {
-//             debugger;
-//             alert ("error_Exit!");
-//         }
-//     });
-// });

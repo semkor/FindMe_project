@@ -9,6 +9,8 @@ import java.util.List;
 @Table (name = "AA_USER")
 public class User {
     private Long id;
+    private String login;
+    private String password;
     private String firstName;
     private String lastName;
     private String phone;
@@ -37,12 +39,14 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String firstName, String lastName, String phone, String email,String country, String city, Integer age, Date dateRegistered, Date dateLastActive, String relationshipStatus, String religion, String school, String university, List<Message> messagesSent, List<Message> messagesReceived, List<Post> postList) {
+    public User(Long id, String login, String password, String firstName, String lastName, String phone, String email, String country, String city, Integer age, Date dateRegistered, Date dateLastActive, String relationshipStatus, String religion, String school, String university, List<Message> messagesSent, List<Message> messagesReceived, List<Post> postList) {
         this.id = id;
+        this.login = login;
+        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.email = email;
         this.phone = phone;
+        this.email = email;
         this.country = country;
         this.city = city;
         this.age = age;
@@ -63,6 +67,16 @@ public class User {
     @Column(name="ID")
     public Long getId() {
         return id;
+    }
+
+    @Column(name="LOGIN")
+    public String getLogin() {
+        return login;
+    }
+
+    @Column(name="PASSWORD")
+    public String getPassword() {
+        return password;
     }
 
     @Column(name="FIRST_NAME")
@@ -150,6 +164,14 @@ public class User {
         this.id = id;
     }
 
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -220,6 +242,8 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", phone='" + phone + '\'' +
@@ -233,8 +257,6 @@ public class User {
                 ", religion='" + religion + '\'' +
                 ", school='" + school + '\'' +
                 ", university='" + university + '\'' +
-                ", messagesSent=" + messagesSent +
-                ", messagesReceived=" + messagesReceived +
                 '}';
     }
 }
