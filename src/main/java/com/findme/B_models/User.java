@@ -1,4 +1,4 @@
-package com.findme.hw;
+package com.findme.B_models;
 
 import com.findme.B_models.Message;
 import com.findme.B_models.Post;

@@ -1,6 +1,6 @@
-package com.findme.hw;
+package com.findme.E_dao;
 
-import com.findme.hw.User;
+import com.findme.B_models.User;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
