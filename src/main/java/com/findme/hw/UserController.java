@@ -22,6 +22,12 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping(path="/")
+    public String home(){
+        System.out.println("запускается стартовая страница");
+        return "index";
+    }
+
     //------------------------------------------------ hw lesson2 ------------------------------------------------------
     @GetMapping(value="/user/{userId}")
     public String profile(@PathVariable long userId, Model model) throws FileNotFoundException, IOException {

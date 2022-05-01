@@ -8,11 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class HomeController {
 
-    @GetMapping(path="/")
-    public String home(){
-            System.out.println("запускается стартовая страница");
-        return "index";
-    }
+
 
     @GetMapping(path="/test-ajax")
     public ResponseEntity<String> testAjax(){
