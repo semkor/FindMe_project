@@ -2,6 +2,8 @@ package com.findme.C_controller;
 
 import com.findme.B_models.User;
 import com.findme.D_service.UserService;
+import com.findme.F_exception.BadRequestException;
+import com.findme.F_exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,13 +26,14 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping(path="/")
+   // -------------------------------------------- первичная страница --------------------------------------------------
+    @GetMapping(value="/")
     public String home(){
         System.out.println("запускается стартовая страница");
         return "index";
     }
 
-    //------------------------------------------------ hw lesson2 ------------------------------------------------------
+    //------------------------------------------------ lesson2_hw ------------------------------------------------------
     @GetMapping(value="/user/{userId}")
     public String profile(@PathVariable long userId, Model model) throws FileNotFoundException, IOException {
         User user = userService.findById(userId);
@@ -52,7 +55,22 @@ public class UserController {
         System.err.println("IOException");
     }
 
-    //---------------------------------------------- lesson3 hw --------------------------------------------------------
+//    @GetMapping(value="/user/{userId}")
+//    public String profile(@PathVariable long userId, Model model){
+//        try {
+//            User user = userService.findById(userId);
+//            model.addAttribute("userModel", user);
+//        }catch(BadRequestException e){
+//            return "page400";
+//        }catch(NotFoundException e){
+//            return "page404";
+//        }catch(Exception e){
+//            return "page500";
+//        }
+//        return "profile";
+//    }
+
+    //---------------------------------------------- lesson3_hw --------------------------------------------------------
     @PostMapping(value="/register-user")
     public ResponseEntity<String> register(@ModelAttribute User user){
 
@@ -65,7 +83,7 @@ public class UserController {
         return new ResponseEntity<String>("Form submitted successfully", HttpStatus.OK);
     }
 
-    //----------------------------------------------- lesson4hw --------------------------------------------------------
+    //----------------------------------------------- lesson4_hw -------------------------------------------------------
     @PostMapping(value="/login")
     public ResponseEntity<String> login(HttpSession session, HttpServletRequest request, HttpServletResponse response,
                                         @ModelAttribute User user){
@@ -87,4 +105,13 @@ public class UserController {
             session.invalidate();
         return new ResponseEntity<String>("session is closed", HttpStatus.OK);
     }
+
+    //----------------------------------------------- lesson5_hw -------------------------------------------------------
+
+
+
+
+
+
+
 }

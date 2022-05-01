@@ -40,7 +40,6 @@ public class UserService {
     }
 
     //---------------------------------------------- lesson3 hw --------------------------------------------------------
-
     public String validation(String phone, String email) {
           String result = "ok";
           List<User> list = userDao.findBySql(sqlPhoneEmail, phone, email);

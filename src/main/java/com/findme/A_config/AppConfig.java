@@ -1,4 +1,4 @@
-package com.findme.A1_config;
+package com.findme.A_config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
