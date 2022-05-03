@@ -40,6 +40,7 @@ public class User {
 
     //------------------------------------------------------------------------------------------------------------------
     public User() {
+
     }
 
     public User(Long id, String login, String password, String firstName, String lastName, String phone, String email, String country, String city, Integer age, Date dateRegistered, Date dateLastActive, String relationshipStatus, String religion, String school, String university, List<Message> messagesSent, List<Message> messagesReceived, List<Post> postList) {

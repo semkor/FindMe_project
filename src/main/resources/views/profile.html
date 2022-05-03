@@ -7,7 +7,13 @@
         <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     </head>
     <body>
-        <div>
+        <div class = "blockHead">
+            <b type="text" value="friends" id = "friends" style="margin-left: 300px; margin-right: 50px;">Friends</b>
+            <b type="text" id = "message" style="margin-right: 450px;">Message</b>
+            <button th:id="btnExit">Выйти! </button>
+            <hr/>
+        </div>
+        <div class = "blockBody">
             <div class="left">
                 <h1>Photo</h1>
                 <div>
@@ -15,8 +21,6 @@
                 </div>
             </div>
             <div class ="right">
-                <b style = >Styled text here</b>
-                </p>
                 <table>
                     <tbody>
                     <tr>
@@ -51,7 +55,6 @@
                 </table>
             </div>
         </div>
-            <button th:id="btnExit">Выйти! </button>
         <script>
             $('#btnExit').click(function(){
                 $.ajax({
@@ -71,17 +74,29 @@
         </script>
     </body>
     <style>
+        body{
+            width: 1000px;
+            margin-left: 40px;
+            margin-top: 30px;
+            background: #ffffff;
+        }
+        .blockHead{
+            background: rgba(101, 101, 208, 0.99);
+        }
+        .blockBody{
+            background: rgba(233, 225, 225, 0.3);
+        }
+        .right{
+            margin-left: 300px;
+        }
         .left {
             float: left;
             width: 200px;
             height: 300px;
             border-style: solid;
         }
-        .right{
-            margin-left: 300px;
-        }
+
         #btnExit{
-            margin-left: 250px;
             width: 70px;
             height: 30px;
         }

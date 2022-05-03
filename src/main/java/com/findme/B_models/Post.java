@@ -9,9 +9,7 @@ public class Post {
     private Long id;
     private String message;
     private Date datePosted;
-
     private User userPosted;
-
     //TODO
     //levels permissions
     //TODO
@@ -31,17 +29,17 @@ public class Post {
     //------------------------------------------------------------------------------------------------------------------
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="ID")
+    @Column(name = "ID")
     public Long getId() {
         return id;
     }
 
-    @Column(name="MESSAGE")
+    @Column(name = "MESSAGE")
     public String getMessage() {
         return message;
     }
 
-    @Column(name="DATA_POSTED")
+    @Column(name = "DATA_POSTED")
     public Date getDatePosted() {
         return datePosted;
     }
