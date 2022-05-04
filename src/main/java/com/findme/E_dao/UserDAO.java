@@ -16,8 +16,8 @@ public class UserDAO {
     private EntityManager entityManager;
 
     //---------------------------------------------------------------------------------------------------------
-    public User findById(long id) {
-        return entityManager.find(User.class, new Long(id));
+    public User findById(Long id) {
+        return entityManager.find(User.class, id);
     }
 
     public User save(User user) {
@@ -32,7 +32,7 @@ public class UserDAO {
     }
 
     public void delete(long id) {
-        entityManager.remove(findById(id));
+        entityManager.remove(findById(new Long(id)));
     }
 
     //--------------------------------------------- lesson3 hw ---------------------------------------------------------
@@ -54,5 +54,7 @@ public class UserDAO {
         } catch (NoResultException e) {}
         return user;
     }
+
+
 }
 

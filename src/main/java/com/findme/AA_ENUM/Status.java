@@ -6,4 +6,5 @@ public enum Status {
     REQUEST_DENIED,             // запрос отклонен
     FORMER_FRIENDS,             // бывший друг
     FRIENDS                     // друзья
+    ;
 }

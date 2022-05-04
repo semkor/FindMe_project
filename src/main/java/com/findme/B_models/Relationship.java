@@ -1,43 +1,75 @@
 package com.findme.B_models;
 
 import com.findme.AA_ENUM.Status;
+import javax.persistence.*;
 
+
+@Entity
+@Table(name = "AD_RELATIONSHIP")
 public class Relationship {
-    private User userFrom;
-    private User userTo;
+    private Long id;
+    private String userFromId;
+    private String userToId;
     private Status status;
 
     //------------------------------------------------------------------------------------------------------------------
-    public Relationship(User userFrom, User userTo, Status status) {
-        this.userFrom = userFrom;
-        this.userTo = userTo;
+    public Relationship() {
+
+    }
+
+    public Relationship(String userFromId, String userToId, Status status) {
+        this.userFromId = userFromId;
+        this.userToId = userToId;
         this.status = status;
     }
 
     //------------------------------------------------------------------------------------------------------------------
-    public User getUserFrom() {
-        return userFrom;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID")
+    public Long getId() {
+        return id;
     }
 
-    public User getUserTo() {
-        return userTo;
+    @Column(name = "USER_FROM_ID")
+    public String getUserFromId() {
+        return userFromId;
     }
 
+    @Column(name = "USER_TO_ID")
+    public String getUserToId() {
+        return userToId;
+    }
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "STATUS")
     public Status getStatus() {
         return status;
     }
 
     //------------------------------------------------------------------------------------------------------------------
-
-    public void setUserFrom(User userFrom) {
-        this.userFrom = userFrom;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setUserTo(User userTo) {
-        this.userTo = userTo;
+    public void setUserFromId(String userFromId) {
+        this.userFromId = userFromId;
+    }
+
+    public void setUserToId(String userToId) {
+        this.userToId = userToId;
     }
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Relationship{" +
+                "userFromId='" + userFromId + '\'' +
+                ", userToId='" + userToId + '\'' +
+                ", status=" + status +
+                '}';
     }
 }

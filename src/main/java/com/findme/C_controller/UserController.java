@@ -1,5 +1,7 @@
 package com.findme.C_controller;
 
+import com.findme.AA_ENUM.Status;
+import com.findme.B_models.Relationship;
 import com.findme.B_models.User;
 import com.findme.D_service.UserService;
 import com.findme.F_exception.BadRequestException;
@@ -16,11 +18,14 @@ import javax.servlet.http.HttpSession;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Enumeration;
+import java.util.List;
+import java.util.Map;
 
 
 @Controller
 public class UserController {
     private UserService userService;
+    private HttpSession sessionClass;
     private final String sessionLogin = "userId";
 
     @Autowired
@@ -89,29 +94,73 @@ public class UserController {
     @PostMapping(value="/login")
     public ResponseEntity<String> login(HttpSession session, HttpServletRequest request, HttpServletResponse response,
                                         @ModelAttribute User user){
+        sessionClass = session;
 
-        Long sessionId = (Long) session.getAttribute(sessionLogin);
+        String sessionId = (String) sessionClass.getAttribute(sessionLogin);
         if (sessionId == null){
             User userBase = userService.validationLogin(user.getLogin(), user.getPassword());
             if(userBase == null)
                 return new ResponseEntity<String>("Invalid login or password", HttpStatus.BAD_REQUEST);
-            sessionId = userBase.getId();
+            sessionId = String.valueOf(userBase.getId());
         }
 
-        session.setAttribute(sessionLogin,sessionId);
+        sessionClass.setAttribute(sessionLogin,sessionId);
 
         return new ResponseEntity<String>("User with this login exists", HttpStatus.OK);
     }
 
     @GetMapping(value="/logout")
-    public ResponseEntity<String> logout(HttpSession session, @ModelAttribute User user){
-            if(session.getAttribute(sessionLogin) == null)
+    public ResponseEntity<String> logout(@ModelAttribute User user){
+            if(sessionClass.getAttribute(sessionLogin) == null)
                 return new ResponseEntity<String>("Session is not opened", HttpStatus.BAD_REQUEST);
 
-            session.invalidate();
+            sessionClass.invalidate();
         return new ResponseEntity<String>("Session is closed", HttpStatus.OK);
     }
 
     //----------------------------------------------- lesson5_hw -------------------------------------------------------
+    // поиск списка моих друзей
+    @GetMapping(value="/allFriends")
+    public ResponseEntity<List<Relationship>> Friends(){
+        return new ResponseEntity<List<Relationship>> (userService.friends(getSessionId()), HttpStatus.OK);
+    }
 
+    // список кто мне отправил запрос
+    @GetMapping(value="/incomeRequest")
+    public ResponseEntity<List<Relationship>> getIncomeRequests(){
+        return new ResponseEntity<List<Relationship>> (userService.incomeRequests(getSessionId()), HttpStatus.OK);
+    }
+
+    // список кому я отправил запрос
+    @GetMapping(value="/outcomeRequest")
+    public ResponseEntity<List<Relationship>> getOutcomeRequests (){
+         return new ResponseEntity<List<Relationship>> (userService.outcomeRequests(getSessionId()), HttpStatus.OK);
+    }
+
+    // отправка заявки на дружбу   //еще проверка, а может он в друзьях
+    @PostMapping(value="/add")
+    public ResponseEntity<String>  addRelationoship (@ModelAttribute Relationship reship){
+        try {
+            userService.addRelationoship(reship.getUserFromId(), reship.getUserToId());
+        }catch (Exception e){
+            return new ResponseEntity<String>("Application has already been sent", HttpStatus.BAD_REQUEST);
+        }
+         return new ResponseEntity<String>("Application sent", HttpStatus.OK);
+    }
+
+    // обновить заявку на дружбу
+    @PutMapping(value="/update")
+    public ResponseEntity<String>  updateRelationship (@ModelAttribute Relationship reship){
+            userService.updateRelationship (reship.getUserFromId(), reship.getUserToId(), reship.getStatus());
+        return new ResponseEntity<String>("Application completed", HttpStatus.OK);
+    }
+
+
+    //=============================================== vault ============================================================
+    private String getSessionId (){
+            if (sessionClass == null)
+                //TODO настроить, чтобы открывалась страница 404, когда нет сессии, что не позволит заходить на страницу
+                return "page404";
+        return (String) sessionClass.getAttribute(sessionLogin);
+    }
 }

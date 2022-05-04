@@ -29,28 +29,28 @@ public class Message {
     //------------------------------------------------------------------------------------------------------------------
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="ID")
+    @Column(name = "ID")
     public Long getId() {
         return id;
     }
 
-    @Column(name="TEXT")
+    @Column(name = "TEXT")
     public String getText() {
         return text;
     }
 
-    @Column(name="DATE_SENT")
+    @Column(name = "DATE_SENT")
     public Date getDateSent() {
         return dateSent;
     }
 
-    @Column(name="DATE_READ")
+    @Column(name = "DATE_READ")
     public Date getDateRead() {
         return dateRead;
     }
 
     @ManyToOne
-    @JoinColumn(name="USER_TO")
+    @JoinColumn(name = "USER_TO")
     public User getUserTo() {
         return userTo;
     }
