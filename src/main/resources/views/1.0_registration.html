@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Registration</title>
+        <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    </head>
+    <body>
+         <div class="containerRegistration">
+                <h2>Registration form of Find me</h2>
+                <div>
+                    <form id = "registration-form" th:method="POST" th:action="@{/register-user}" th:object="${user}">
+                        <table>
+                            <tr>
+                                <th><b style="color: red;">Login:</b> </th>
+                                <th><input type="text"  th:field="*{login}" id="login" name="login" required maxlength="20"/></th>
+                            </tr>
+                            <tr>
+                                <th><b style="color: red;">Password:</b> </th>
+                                <th><input type="text"  th:field="*{password}"  name="password" required maxlength="15"/></th>
+                            </tr>
+                            <tr>
+                                <th><b>FirstName:</b> </th>
+                                <th><input type="text"  th:field="*{firstName}" name="firstName" required maxlength="15"/></th>
+                            </tr>
+                            <tr>
+                                <th><b>LastName:</b> </th>
+                                <th><input type="text"  th:field="*{lastName}"  name="lastName" required maxlength="15"/></th>
+                            </tr>
+                                <tr>
+                                <th><b>Phone:</b> </th>
+                                <th><input type="text"  th:field="*{phone}"  id="phone"  name="phone" title = "формат xxx-xxx-xx-xx" required pattern="\d{3}-\d{3}-\d{2}-\d{2}"/></th>
+                            </tr>
+                            <tr>
+                                <th><b>Email:</b> </th>
+                                <th><input type="email"  th:field="*{email}" id = "email" name="email" required maxlength="25"/></th>
+                            </tr>
+                            <tr>
+                                <th><b>Country:</b> </th>
+                                <th><input type="text"  th:field="*{country}" name="country" maxlength="15"/></th>
+                            </tr>
+                                <tr>
+                                <th><b>City:</b> </th>
+                                <th><input type="text"  th:field="*{city}"   name="city" maxlength="15"/></th>
+                            </tr>
+                                <tr>
+                                <th><b>Age:</b> </th>
+                                <th><input type="number"  th:field="*{age}"   name="age" min="1" max="100"/></th>
+                            </tr>
+                            <tr>
+                                <th><b>Relationship Status:</b> </th>
+                                <th><input type="text"   th:field="*{relationshipStatus}"  name="relationshipStatus" maxlength="20"/></th>
+                            </tr>
+                            <tr>
+                                <th><b>Religion:</b> </th>
+                                <th><input type="text"   th:field="*{religion}"  name="religion" maxlength="20"/></th>
+                            </tr>
+                            <tr>
+                                <th><b>School:</b> </th>
+                                <th><input type="text"   th:field="*{school}"  name="school"  maxlength="20"/></th>
+                            </tr>
+                            <tr>
+                                <th><b>University:</b> </th>
+                                <th><input type="text"   th:field="*{university}"  name="university" maxlength="20"/></th>
+                            </tr>
+                        </table>
+                        <input type= "submit" id="save" value="cохранить"/>
+                    </form>
+                    <form th:method="GET" th:action="@{/}">
+                        <input type= "submit" id="back" value="назад"/>
+                    </form>
+                </div>
+         </div>
+    </body>
+    <script>
+        $('#login').change(function(){
+            $.ajax({
+                type: "POST",
+                url: "/register-valid-login",
+                data: { login : this.value },
+                error: function error(xhr) {
+                    alert(xhr.responseText);
+                    $('#login').val('');
+                }
+            });
+        });
+        $('#phone').change(function(){
+            $.ajax({
+                type: "POST",
+                url: "/register-valid-phone",
+                data: { phone : this.value },
+                error: function error(xhr) {
+                    alert(xhr.responseText);
+                    $('#phone').val('');
+                }
+            });
+        });
+        $('#email').change(function(){
+            $.ajax({
+                type: "POST",
+                url: "/register-valid-email",
+                data: { email : this.value },
+                error: function error(xhr) {
+                    alert(xhr.responseText);
+                    $('#email').val('');
+                }
+            });
+        });
+        $('#registration-form').submit(function(){
+            alert("Registrarion successfull")
+        });
+    </script>
+    <style>
+        body{
+            background: rgba(213, 212, 212, 0.87);
+        }
+        .containerRegistration{
+            position: absolute;
+            top: 5%;
+            left: 35%;
+            width: 410px;
+            height: 490px;
+        }
+        h2{
+            margin-top: 10px;
+            margin-left: 40px;
+            margin-bottom: 10px;
+        }
+        th{
+            text-align: left;
+            width: 170px;
+        }
+        input{
+            margin-top: 10px;
+            width: 200px;
+        }
+        #save{
+            margin-top: 20px;
+            margin-left: 285px;
+            width: 100px;
+            background: #2ed523;
+        }
+        #back{
+            position: absolute;
+            top: 106%;
+            left: 1%;
+            margin-top: 5px;
+            width: 100px;
+        }
+    </style>
+</html>
+

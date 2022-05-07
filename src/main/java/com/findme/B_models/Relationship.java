@@ -2,6 +2,7 @@ package com.findme.B_models;
 
 import com.findme.AA_ENUM.Status;
 import javax.persistence.*;
+import java.util.Date;
 
 
 @Entity
@@ -11,16 +12,23 @@ public class Relationship {
     private String userFromId;
     private String userToId;
     private Status status;
+    private Date DateChangeStatus;
 
     //------------------------------------------------------------------------------------------------------------------
     public Relationship() {
-
     }
 
     public Relationship(String userFromId, String userToId, Status status) {
         this.userFromId = userFromId;
         this.userToId = userToId;
         this.status = status;
+    }
+
+    public Relationship(String userFromId, String userToId, Status status, Date dateChangeStatus) {
+        this.userFromId = userFromId;
+        this.userToId = userToId;
+        this.status = status;
+        this.DateChangeStatus = dateChangeStatus;
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -47,6 +55,11 @@ public class Relationship {
         return status;
     }
 
+    @Column(name = "DATA_CHANGE_STATUS")
+    public Date getDateChangeStatus() {
+        return DateChangeStatus;
+    }
+
     //------------------------------------------------------------------------------------------------------------------
     public void setId(Long id) {
         this.id = id;
@@ -64,12 +77,18 @@ public class Relationship {
         this.status = status;
     }
 
+    public void setDateChangeStatus(Date dateChangeStatus) {
+        DateChangeStatus = dateChangeStatus;
+    }
+
     @Override
     public String toString() {
         return "Relationship{" +
-                "userFromId='" + userFromId + '\'' +
+                "id=" + id +
+                ", userFromId='" + userFromId + '\'' +
                 ", userToId='" + userToId + '\'' +
                 ", status=" + status +
+                ", DateChangeStatus=" + DateChangeStatus +
                 '}';
     }
 }

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>FindMe</title>
+        <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    </head>
+    <body>
+          <div class = "containerLogin">
+                <h2>Welcome to social network</h2>
+                <div class="login">
+                    <form id = "login-form">
+                        <table>
+                            <tr>
+                                <th><b>login:</b> </th>
+                                <th><input type="text"  id ="login" name="login" required maxlength="20"/></th>
+                            </tr>
+                            <tr>
+                                <th><b>password:</b> </th>
+                                <th><input type="text" id ="password" name="password" required maxlength="15"/></th>
+                            </tr>
+                        </table>
+                        <input type= "submit" id="inout" style="background: #2ed523;" value="войти"/>
+                    </form>
+                    <form th:method="GET" th:action="@{/registration-form}">
+                        <input type= "submit" id="registration" value="регистрация"/>
+                    </form>
+                </div>
+         </div>
+    </body>
+    <script>
+        $('#login-form').submit(function(){
+            $.ajax({
+                type: "POST",
+                url: "/login",
+                async: false,
+                data: $(this).serialize(),
+                success: function(results) {
+                    alert(results);
+                },
+                error: function error(xhr) {
+                    alert(xhr.responseText);
+                }
+            });
+        });
+    </script>
+    <style>
+        body{
+            background: rgba(213, 212, 212, 0.87);
+        }
+        .containerLogin{
+            position: absolute;
+            top: 20%;
+            left: 40%;
+            width: 300px;
+            height: 160px;
+        }
+        h2{
+            margin-top: 5px;
+            margin-left: 9px;
+            margin-bottom: 10px;
+        }
+        th{
+            text-align: left;
+            width: 200px;
+        }
+        input{
+            margin-top: 10px;
+        }
+        #registration{
+            position: absolute;
+            top: 77%;
+            left: 1%;
+            margin-top: 1px;
+            width: 115px;
+            background: #d58686;
+        }
+        #inout{
+            width: 70px;
+            margin-left: 220px;
+            background: rgba(191, 236, 181, 0.72);
+        }
+    </style>
+</html>
+

@@ -18,10 +18,8 @@ public class User {
     private String lastName;
     private String phone;
     private String email;
-    //TODO from existed data
     private String country;
     private String city;
-
     private Integer age;
     private Date dateRegistered;
     private Date dateLastActive;

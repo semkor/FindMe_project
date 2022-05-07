@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Profile</title>
+        <script src = "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <div class = "blockHead">
+            <b type="text" value="friends" id = "friends" style="margin-left: 300px; margin-right: 50px;">Friends</b>
+            <form th:method="GET" th:action="@{/logout}">
+                <input type= "submit" id="btnExit" value="выйти"/>
+            </form>
+        </div>
+        <div class = "blockBody">
+            <div class="left">
+                <h1>Photo</h1>
+                <div>
+                    <button class ="btn">Send message</button>
+                </div>
+            </div>
+            <div class ="right">
+                <table>
+                    <tbody>
+                    <tr>
+                        <td><b>FirstName:</b> </td>
+                        <td><b>LastName:</b> </td>
+                        <td><b>Phone:</b> </td>
+                        <td><b>Country:</b> </td>
+                        <td><b>City:</b> </td>
+                        <td><b>Age:</b> </td>
+                        <td><b>Date Registered:</b> </td>
+                        <td><b>Date Last Active:</b> </td>
+                        <td><b>Relationship Status:</b> </td>
+                        <td><b>Religion:</b> </td>
+                        <td><b>School:</b> </td>
+                        <td><b>University:</b> </td>
+                    </tr>
+                    <tr>
+                        <td th:text="${userModel.firstName}"> - </td>
+                        <td th:text="${userModel.lastName}"> - </td>
+                        <td th:text="${userModel.phone}"> - </td>
+                        <td th:text="${userModel.country}"> - </td>
+                        <td th:text="${userModel.city}"> - </td>
+                        <td th:text="${userModel.age}"> - </td>
+                        <td th:text="${userModel.dateRegistered}"> - </td>
+                        <td th:text="${userModel.dateLastActive}"> - </td>
+                        <td th:text="${userModel.relationshipStatus}"> - </td>
+                        <td th:text="${userModel.religion}"> - </td>
+                        <td th:text="${userModel.school}"> - </td>
+                        <td th:text="${userModel.university}"> - </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class = "allButton">
+<!--            кнопка посмотреть сколько друзей-->
+                <button type="click" id="friend">friends</button>
+
+<!--            кнопка посмотреть сколько заявок-->
+                <button type="click" id="income">income</button>
+
+<!--            кнопка посмотреть сколько отправлено заявок-->
+                <button type="click" id="outcome">outcome</button>
+
+<!--            форма добавить друга-->
+                <form id = "addFriend">
+                    <table>
+                        <tr>
+                            <th><b>userFromId:</b> </th>
+                            <th><input type="text" name="userFromId"/></th>
+                        </tr>
+                        <tr>
+                            <th><b>UserToId:</b> </th>
+                            <th><input type="text" name="userToId"/></th>
+                        </tr>
+                    </table>
+                    <input type= "submit" value="addFriend"/>
+                </form>
+
+<!--            кнопка обновить статус друга-->
+                <form id = "updateFriend">
+                    <table>
+                        <tr>
+                            <th><b>userFromId:</b> </th>
+                            <th><input type="text" name="userFromId"/></th>
+                        </tr>
+                        <tr>
+                            <th><b>userToId:</b> </th>
+                            <th><input type="text" name="userToId"/></th>
+                        </tr>
+                        <tr>
+                            <th><b>Status:</b> </th>
+                            <th><input type="text" name="status"/></th>
+                        </tr>
+                    </table>
+                    <input type= "submit" value="updateFriend"/>
+                </form>
+        </div>
+    </body>
+    <script>
+        $('#friend').click(function(){
+            $.ajax({
+                type: "GET",
+                url: "/allFriends",
+                async: false,
+                data: {},
+                success: function(results) {
+                    alert(results);
+                },
+                error: function error(xhr) {
+                    alert(xhr.responseText);
+                }
+            });
+        });
+        $('#income').click(function(){
+            $.ajax({
+                type: "GET",
+                url: "/incomeRequest",
+                async: false,
+                data: {},
+                success: function(results) {
+                    alert(results);
+                },
+                error: function error(xhr) {
+                    alert(xhr.responseText);
+                }
+            });
+        });
+        $('#outcome').click(function(){
+            $.ajax({
+                type: "GET",
+                url: "/outcomeRequest",
+                async: false,
+                data: {},
+                success: function(results) {
+                    alert(results);
+                },
+                error: function error(xhr) {
+                    alert(xhr.responseText);
+                }
+            });
+        });
+        $('#addFriend').submit(function(){
+            $.ajax({
+                type: "POST",
+                url: "/add",
+                async: false,
+                data: $(this).serialize(),
+                success: function(results) {
+                    alert(results);
+                },
+                error: function error(xhr) {
+                    alert(xhr.responseText);
+                }
+            });
+        });
+        $('#updateFriend').submit(function(){
+            $.ajax({
+                type: "PUT",
+                url: "/update",
+                async: false,
+                data: $(this).serialize(),
+                success: function(results) {
+                    alert(results);
+                },
+                error: function error(xhr) {
+                    alert(xhr.responseText);
+                }
+            });
+        });
+    </script>
+    <style>
+        body{
+            width: 1000px;
+            margin-left: 40px;
+            margin-top: 30px;
+            background: #ffffff;
+        }
+        .blockHead{
+            background: rgba(101, 101, 208, 0.99);
+        }
+        .blockBody{
+            background: rgba(233, 225, 225, 0.3);
+        }
+        .right{
+            margin-left: 300px;
+        }
+        .left {
+            float: left;
+            width: 200px;
+            height: 300px;
+            border-style: solid;
+        }
+
+        #btnExit{
+            width: 70px;
+            height: 30px;
+        }
+        .btn{
+            margin-top: 250px;
+        }
+        tbody {
+            display:flex;
+        }
+        tr {
+            display:flex;
+            flex-direction: column;
+            flex-wrap:      wrap;
+        }
+        td {
+            height: 30px;
+            width: 160px;
+            align-content: center;
+        }
+        .allButton{
+            position: absolute;
+            top: 52%;
+            left: 30%;
+            width: 600px;
+            height: 350px;
+        }
+        #friend, #income, #outcome{
+            width: 100px;
+            height: 40px;
+        }
+    </style>
+</html>

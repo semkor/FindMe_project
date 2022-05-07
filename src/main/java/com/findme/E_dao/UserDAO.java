@@ -3,9 +3,8 @@ package com.findme.E_dao;
 import com.findme.B_models.User;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
+
+import javax.persistence.*;
 import java.util.List;
 
 @Repository
@@ -36,10 +35,9 @@ public class UserDAO {
     }
 
     //--------------------------------------------- lesson3 hw ---------------------------------------------------------
-    public List<User> findBySql(String sql, String firstName, String secondName) {
+    public List<User> findBySql(String sql, String firstName) {
         return entityManager.createNativeQuery(sql,User.class)
                 .setParameter(1,firstName)
-                .setParameter(2,secondName)
                 .getResultList();
     }
 
@@ -54,7 +52,5 @@ public class UserDAO {
         } catch (NoResultException e) {}
         return user;
     }
-
-
 }
 
