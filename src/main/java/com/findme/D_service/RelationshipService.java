@@ -83,9 +83,7 @@ public class RelationshipService {
     // обновление статусов, кроме NOT FRIENDS - REQUEST
                 // в Handler    -  обновляем Relationship в базе (заменив статус + дату изменения)
     public void updateRelationship (String userIdFrom, String userIdTo, Status status) throws BadRequestException {
-        System.out.println("вход в сервис");
         Relationship relationship = relDAO.findBySQL(sqlChainUser, userIdFrom,userIdTo);
-        System.out.println(relationship);
         subsequence.sequence(relationship, status);
     }
 }

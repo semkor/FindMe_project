@@ -1,11 +1,7 @@
 package com.findme.C_controller;
 
-import com.findme.AA_ENUM.Status;
-import com.findme.B_models.Relationship;
 import com.findme.B_models.User;
 import com.findme.D_service.UserService;
-import com.findme.E_dao.RelationshipDAO;
-import com.findme.F_exception.BadRequestException;
 import com.findme.F_exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

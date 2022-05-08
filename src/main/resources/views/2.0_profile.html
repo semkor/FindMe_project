@@ -32,7 +32,7 @@
                         <td><b>Age:</b> </td>
                         <td><b>Date Registered:</b> </td>
                         <td><b>Date Last Active:</b> </td>
-                        <td><b>Relationship Status:</b> </td>
+                        <td><b>Relationship:</b> </td>
                         <td><b>Religion:</b> </td>
                         <td><b>School:</b> </td>
                         <td><b>University:</b> </td>
@@ -46,7 +46,7 @@
                         <td th:text="${userModel.age}"> - </td>
                         <td th:text="${userModel.dateRegistered}"> - </td>
                         <td th:text="${userModel.dateLastActive}"> - </td>
-                        <td th:text="${userModel.relationshipStatus}"> - </td>
+                        <td th:text="${userModel.relationship}"> - </td>
                         <td th:text="${userModel.religion}"> - </td>
                         <td th:text="${userModel.school}"> - </td>
                         <td th:text="${userModel.university}"> - </td>
@@ -98,6 +98,36 @@
                     </table>
                     <input type= "submit" value="updateFriend"/>
                 </form>
+
+            <!-- форма добавить пост -->
+                <form id = "addPost">
+                    <table>
+                        <tr>
+                            <th><b>Message:</b> </th>
+                            <th><input type="text" id = "message" name="message" title = "нельзя использовать ссылки" required maxlength="200"/></th>
+                        </tr>
+                        <tr>
+                            <th><b>Location:</b> </th>
+                            <th><input type="text" id = "location"  name="location"/></th>
+                        </tr>
+                        <tr>
+                            <th><b>UserPagePosted:</b> </th>
+                            <th><input type="text" id = "userPagePosted"  name="userPagePosted"/></th>
+                        </tr>
+                    </table>
+                <input type= "submit" value="addPost"/>
+            </form>
+
+            <!-- форма поставить like -->
+            <form id = "like">
+                <table>
+                    <tr>
+                        <th><b>Post:</b> </th>
+                        <th><input type="text" id = "post" name="post" required/></th>
+                    </tr>
+                </table>
+                <input type= "submit" value="like"/>
+            </form>
         </div>
     </body>
     <script>
@@ -171,6 +201,36 @@
                 }
             });
         });
+        $('#addPost').submit(function(){
+            $.ajax({
+                type: "POST",
+                url: "/createPost",
+                async: false,
+                data: { message         : document.getElementById('message').value,
+                        location        : document.getElementById('location').value,
+                        userPagePosted  : document.getElementById('userPagePosted').value},
+                success: function(results) {
+                    alert(results);
+                },
+                error: function error(xhr) {
+                    alert(xhr.responseText);
+                }
+            });
+        });
+        $('#like').submit(function(){
+            $.ajax({
+                type: "GET",
+                url: "/lovePost",
+                async: false,
+                data: { post  : document.getElementById('post').value},
+                success: function(results) {
+                    alert(results);
+                },
+                error: function error(xhr) {
+                    alert(xhr.responseText);
+                }
+            });
+        });
     </script>
     <style>
         body{
@@ -217,7 +277,7 @@
         }
         .allButton{
             position: absolute;
-            top: 52%;
+            top: 32%;
             left: 30%;
             width: 600px;
             height: 350px;

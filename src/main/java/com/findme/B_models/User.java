@@ -1,10 +1,8 @@
 package com.findme.B_models;
 
-import com.findme.B_models.Message;
-import com.findme.B_models.Post;
+import com.findme.HW.Post;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 import java.util.List;
 
@@ -24,24 +22,24 @@ public class User {
     private Date dateRegistered;
     private Date dateLastActive;
     //TODO enum
-    private String relationshipStatus;
+    private String relationship;
     private String religion;
     //TODO from existed data
     private String school;
     private String university;
 
+    private List<Post> postList;
+    private List<Post> postListTagged;
+
     private List<Message> messagesSent;
     private List<Message> messagesReceived;
-    private List<Post> postList;
-
     //private String[] interests;
 
     //------------------------------------------------------------------------------------------------------------------
     public User() {
-
     }
 
-    public User(Long id, String login, String password, String firstName, String lastName, String phone, String email, String country, String city, Integer age, Date dateRegistered, Date dateLastActive, String relationshipStatus, String religion, String school, String university, List<Message> messagesSent, List<Message> messagesReceived, List<Post> postList) {
+    public User(Long id, String login, String password, String firstName, String lastName, String phone, String email, String country, String city, Integer age, Date dateRegistered, Date dateLastActive, String relationship, String religion, String school, String university, List<Post> postList, List<Post> postListTagged, List<Message> messagesSent, List<Message> messagesReceived) {
         this.id = id;
         this.login = login;
         this.password = password;
@@ -54,13 +52,14 @@ public class User {
         this.age = age;
         this.dateRegistered = dateRegistered;
         this.dateLastActive = dateLastActive;
-        this.relationshipStatus = relationshipStatus;
+        this.relationship = relationship;
         this.religion = religion;
         this.school = school;
         this.university = university;
+        this.postList = postList;
+        this.postListTagged = postListTagged;
         this.messagesSent = messagesSent;
         this.messagesReceived = messagesReceived;
-        this.postList = postList;
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -126,9 +125,9 @@ public class User {
         return dateLastActive;
     }
 
-    @Column(name="RELATIONSHIP_STATUS")
-    public String getRelationshipStatus() {
-        return relationshipStatus;
+    @Column(name="RELATIONSHIP")
+    public String getRelationship() {
+        return relationship;
     }
 
     @Column(name="RELIGION")
@@ -146,6 +145,19 @@ public class User {
         return university;
     }
 
+    @OneToMany (mappedBy = "userPosted", cascade = CascadeType.REMOVE,fetch = FetchType.LAZY)
+    public List<Post> getPostList() {
+        return postList;
+    }
+
+    @ManyToMany (cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @JoinTable (name="AE_USER_POST",
+            joinColumns = @JoinColumn(name = "USER_ID"),
+            inverseJoinColumns = @JoinColumn (name = "POST_ID"))
+    public List<Post> getPostListTagged() {
+        return postListTagged;
+    }
+
     @OneToMany (mappedBy = "userTo", cascade = CascadeType.REMOVE,fetch = FetchType.LAZY)
     public List<Message> getMessagesSent() {
         return messagesSent;
@@ -156,10 +168,6 @@ public class User {
         return messagesReceived;
     }
 
-    @OneToMany (mappedBy = "userPosted", cascade = CascadeType.REMOVE,fetch = FetchType.LAZY)
-    public List<Post> getPostList() {
-        return postList;
-    }
 
     //------------------------------------------------------------------------------------------------------------------
     public void setId(Long id) {
@@ -210,8 +218,8 @@ public class User {
         this.dateLastActive = dateLastActive;
     }
 
-    public void setRelationshipStatus(String relationshipStatus) {
-        this.relationshipStatus = relationshipStatus;
+    public void setRelationship(String relationship) {
+        this.relationship = relationship;
     }
 
     public void setReligion(String religion) {
@@ -238,6 +246,10 @@ public class User {
         this.postList = postList;
     }
 
+    public void setPostListTagged(List<Post> postListTagged) {
+        this.postListTagged = postListTagged;
+    }
+
     //------------------------------------------------------------------------------------------------------------------
 
     @Override
@@ -255,7 +267,7 @@ public class User {
                 ", age=" + age +
                 ", dateRegistered=" + dateRegistered +
                 ", dateLastActive=" + dateLastActive +
-                ", relationshipStatus='" + relationshipStatus + '\'' +
+                ", relationship ='" + relationship + '\'' +
                 ", religion='" + religion + '\'' +
                 ", school='" + school + '\'' +
                 ", university='" + university + '\'' +
