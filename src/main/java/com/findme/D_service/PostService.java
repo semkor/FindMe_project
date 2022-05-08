@@ -1,10 +1,12 @@
-package com.findme.HW;
+package com.findme.D_service;
 
 import com.findme.B_models.User;
+import com.findme.E_dao.PostDAO;
 import com.findme.E_dao.RelationshipDAO;
 import com.findme.E_dao.UserDAO;
 import com.findme.F_exception.BadRequestException;
 import com.findme.F_exception.InternalServerError;
+import com.findme.B_models.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

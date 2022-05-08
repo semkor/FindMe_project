@@ -1,7 +1,7 @@
-package com.findme.HW;
+package com.findme.C_controller;
 
 import com.findme.C_controller.UserController;
-import com.findme.HW.PostService;
+import com.findme.D_service.PostService;
 import com.findme.F_exception.BadRequestException;
 import com.findme.F_exception.InternalServerError;
 import org.springframework.beans.factory.annotation.Autowired;
