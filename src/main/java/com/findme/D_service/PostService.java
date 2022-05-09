@@ -1,4 +1,4 @@
-package com.findme.HW;
+package com.findme.D_service;
 
 import com.findme.B_models.Relationship;
 import com.findme.B_models.User;

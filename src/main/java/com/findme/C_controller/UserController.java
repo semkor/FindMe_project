@@ -1,7 +1,7 @@
 package com.findme.C_controller;
 
 import com.findme.B_models.User;
-import com.findme.HW.PostService;
+import com.findme.D_service.PostService;
 import com.findme.D_service.UserService;
 import com.findme.F_exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
