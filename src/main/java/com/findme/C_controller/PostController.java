@@ -1,8 +1,9 @@
-package com.findme.HW;
+package com.findme.C_controller;
 
-import com.findme.C_controller.UserController;
+import com.findme.B_models.Post;
 import com.findme.F_exception.BadRequestException;
 import com.findme.F_exception.InternalServerError;
+import com.findme.D_service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

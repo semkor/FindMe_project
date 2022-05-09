@@ -1,6 +1,4 @@
-package com.findme.HW;
-
-import com.findme.B_models.User;
+package com.findme.B_models;
 
 import javax.persistence.*;
 import java.util.Date;
