@@ -129,6 +129,22 @@
                 <input type= "submit" value="like"/>
             </form>
         </div>
+        <!-- перечень постов Usera -->
+        <div class ="postAll">
+            <table>
+                <caption>Post</caption>
+                <tr>
+                    <th>Message</th>
+                    <th>Date</th>
+                    <th>Location</th>
+                </tr>
+                <tr th:each="sb : ${postList}">
+                    <td th:text="${sb.getMessage()}"> 1 </td>
+                    <td th:text="${sb.getDatePosted()}"> 2 </td>
+                    <td th:text="${sb.getLocation()}"> 3 </td>
+                </tr>
+            </table>
+        </div>
     </body>
     <script>
         $('#friend').click(function(){
@@ -277,14 +293,21 @@
         }
         .allButton{
             position: absolute;
-            top: 32%;
-            left: 30%;
+            top: 51%;
+            left: 3%;
             width: 600px;
             height: 350px;
         }
         #friend, #income, #outcome{
             width: 100px;
             height: 40px;
+        }
+        .postAll{
+            position: absolute;
+            top: 3%;
+            left: 55%;
+            width: 600px;
+            height: 350px;
         }
     </style>
 </html>

@@ -75,4 +75,16 @@ public class RelationshipDAO {
         }catch(NoResultException | NullPointerException e){}
         return count;
     }
+
+    //---------------------------------------------- lesson 7.1 --------------------------------------------------------
+    public List<Relationship> findBySQLFriends(String sql, String firstArgument) {
+        return entityManager.createNativeQuery(sql, Relationship.class)
+                .setParameter(1, firstArgument)
+                .setParameter(2, firstArgument)
+                .getResultList();
+    }
+
+
+
+
 }

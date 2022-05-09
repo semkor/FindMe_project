@@ -1,4 +1,4 @@
-package com.findme.B_models;
+package com.findme.HW;
 
 import com.findme.B_models.User;
 
@@ -8,7 +8,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "AC_POST")
-public class Post {
+public class Post implements Comparable<Post> {
     private Long id;
     private User userPosted;
     private User userPagePosted;
@@ -105,6 +105,16 @@ public class Post {
     }
 
     //------------------------------------------------------------------------------------------------------------------
+    @Override
+    public int compareTo(Post o) {
+        int res=-1;
+        if(o.getDatePosted().getTime()>this.datePosted.getTime())
+            res = 1;
+        else if(o.getDatePosted().getTime()<this.datePosted.getTime())
+            res = -1;
+        return res;
+    }
+
     @Override
     public String toString() {
         return "Post{" +

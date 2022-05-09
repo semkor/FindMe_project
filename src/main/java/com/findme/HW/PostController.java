@@ -1,7 +1,6 @@
-package com.findme.C_controller;
+package com.findme.HW;
 
 import com.findme.C_controller.UserController;
-import com.findme.D_service.PostService;
 import com.findme.F_exception.BadRequestException;
 import com.findme.F_exception.InternalServerError;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import static java.lang.String.valueOf;
+import java.util.TreeSet;
 
 
 @Controller
@@ -24,6 +23,7 @@ public class PostController {
         this.userController = userController;
     }
 
+    //-------------------------------------------- lesson 7.1 ----------------------------------------------------------
     // добавление Post
     @PostMapping (value="/createPost")
     public ResponseEntity<String> addPost(@RequestParam("message") String message, @RequestParam("location") String location,
@@ -48,6 +48,27 @@ public class PostController {
     public ResponseEntity<String> lovePost(@RequestParam("post") String postId){
             postService.saveLike(getSessionId(), postId);
         return new ResponseEntity<String>("Like successfully",HttpStatus.OK);
+    }
+
+
+    //-------------------------------------------- lesson 7.2 ----------------------------------------------------------
+    // все мои посты
+    @GetMapping(value = "/allMyPost")
+    public ResponseEntity<TreeSet<Post>> allMyPost(){
+        return new ResponseEntity<TreeSet<Post>>(postService.allMyPost(getSessionId()), HttpStatus.OK);
+    }
+
+    // все посты моих друзей
+    @GetMapping(value = "/allFriendsPost")
+    public ResponseEntity<TreeSet<Post>> allFriendsPost(){
+        return new ResponseEntity<TreeSet<Post>>(postService.allFriendsPost(getSessionId()), HttpStatus.OK);
+    }
+
+    // все посты по Id User
+    @GetMapping(value = "/allIdUserPost")
+    public ResponseEntity<TreeSet<Post>> allIdUserPost(@RequestParam String idUserPost){
+        getSessionId();
+        return new ResponseEntity<TreeSet<Post>>(postService.allIdUserPost(idUserPost), HttpStatus.OK);
     }
 
     //=============================================== vault ============================================================

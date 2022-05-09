@@ -1,6 +1,7 @@
 package com.findme.C_controller;
 
 import com.findme.B_models.User;
+import com.findme.HW.PostService;
 import com.findme.D_service.UserService;
 import com.findme.F_exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +17,15 @@ import java.util.Date;
 @Controller
 public class UserController {
     private UserService userService;
+    private PostService postService;
     private HttpSession sessionClass;
     private final String sessionLogin = "userId";
 
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, PostService postService) {
         this.userService = userService;
+        this.postService = postService;
     }
 
    //-------------------------------------  первичная страница  (логин & пароль) ---------------------------------------
@@ -119,6 +122,7 @@ public class UserController {
         try {
             User user = userService.findById(Long.parseLong(getSessionId()));
             model.addAttribute("userModel", user);
+            model.addAttribute("postList", postService.allPost(getSessionId()));        // c lesson 7.2
         }catch(NotFoundException | NumberFormatException e){
             return "5.2_page404";
         }catch(Exception e){
