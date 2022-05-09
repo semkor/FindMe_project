@@ -1,18 +1,20 @@
-package com.findme.D_service;
+package com.findme.HW;
 
+import com.findme.B_models.Relationship;
 import com.findme.B_models.User;
 import com.findme.E_dao.PostDAO;
 import com.findme.E_dao.RelationshipDAO;
 import com.findme.E_dao.UserDAO;
 import com.findme.F_exception.BadRequestException;
 import com.findme.F_exception.InternalServerError;
-import com.findme.B_models.Post;
+import com.findme.HW.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.TreeSet;
 
 @Service
 public class PostService {
@@ -27,11 +29,13 @@ public class PostService {
         this.userDAO = userDAO;
     }
 
-    //---------------------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------------
     @Value("${sqlExecute.sqlChainUserFriends}")
     private String sqlChainUserFriends;
+    @Value("${sqlExecute.sqlAllUserFriends}")
+    private String sqlAllUserFriends;
 
-    //---------------------------------------------------------------------------------------------------------
+    //-------------------------------------------- lesson 7.1 ----------------------------------------------------------
     // проверка наявности ссылки в тексте
     public boolean validMessagePosted(String message) throws BadRequestException{
         if(message.contains("http:") || message.contains("https:") || message.contains("www.") )
@@ -65,4 +69,44 @@ public class PostService {
             post.setUserTagged(list);
        postDAO.update(post);
     }
+
+    //-------------------------------------------- lesson 7.2 ----------------------------------------------------------
+    // все посты + посты друзей
+    public TreeSet<Post> allPost(String userPageId){
+        TreeSet<Post> posts = new TreeSet<>();
+            posts.addAll(allMyPost(userPageId));
+            posts.addAll(allFriendsPost(userPageId));
+        return posts;
+    }
+
+    // все мои посты
+    public TreeSet<Post> allMyPost(String userPageId) {
+        TreeSet<Post> posts = new TreeSet<>();
+            posts.addAll(userDAO.findById(Long.parseLong(userPageId)).getPostList());
+        return posts;
+    }
+
+    // все посты моих друзей
+    public TreeSet<Post> allFriendsPost(String userPageId) {
+        TreeSet<Post> posts = new TreeSet<>();
+        List<Relationship> list = relDAO.findBySQLFriends(sqlAllUserFriends,userPageId);
+        if(list != null) {
+            for (Relationship el : list) {
+                if(el.getUserFromId().equals(userPageId))
+                    posts.addAll(userDAO.findById(Long.parseLong(el.getUserToId())).getPostList());
+                else
+                    posts.addAll(userDAO.findById(Long.parseLong(el.getUserFromId())).getPostList());
+            }
+        }
+        return posts;
+    }
+
+    // все посты по IdUser
+    public TreeSet<Post> allIdUserPost(String idUserPost){
+        TreeSet<Post> posts = new TreeSet<>();
+            posts.addAll(userDAO.findById(Long.parseLong(idUserPost)).getPostList());
+        return posts;
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
 }
