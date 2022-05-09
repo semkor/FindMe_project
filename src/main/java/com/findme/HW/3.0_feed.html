@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Feed</title>
+    </head>
+    <body>
+    <div id="feed">
+        <table>
+            <thead>
+                <tr>
+                    <th> idPost</th>
+                    <th> Message</th>
+                    <th> Location</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="el : ${postList}">
+                    <td><span th:text="${el.getId()}"> message</span></td>
+                    <td><span th:text="${el.getMessage()}"> message</span></td>
+                    <td><span th:text="${el.getLocation()}"> location </span></td>
+                </tr>
+            </tbody>
+        </table>
+        </form>
+            <form th:method="GET" th:action="@{/moreFeed}">
+            <input type= "submit" id="more" value="eще"/>
+        </form>
+    </div>
+    </body>
+</html>

@@ -1,13 +1,14 @@
-package com.findme.C_controller;
+package com.findme.HW;
 
 import com.findme.B_models.Post;
+import com.findme.C_controller.UserController;
 import com.findme.F_exception.BadRequestException;
 import com.findme.F_exception.InternalServerError;
-import com.findme.D_service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.TreeSet;
@@ -71,6 +72,22 @@ public class PostController {
         getSessionId();
         return new ResponseEntity<TreeSet<Post>>(postService.allIdUserPost(idUserPost), HttpStatus.OK);
     }
+
+    //-------------------------------------------- lesson 8 ------------------------------------------------------------
+    // посты всех друзей (от самых новых до самых старых) - первые 10
+    @GetMapping(value = "/feed")
+    public String feed(Model model){
+        model.addAttribute("postList",postService.feedLimit(getSessionId()));
+        return "3.0_feed";
+    }
+
+    // посты всех друзей (от самых новых до самых старых) - первые 5 + 10 новых
+    @GetMapping(value = "/moreFeed")
+    public String moreFeed(Model model){
+        model.addAttribute("postList",postService.feedLimit(getSessionId()));
+        return "3.0_feed";
+    }
+
 
     //=============================================== vault ============================================================
     private String getSessionId(){
