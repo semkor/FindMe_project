@@ -4,9 +4,12 @@ import com.findme.B_models.User;
 import com.findme.E_dao.RelationshipDAO;
 import com.findme.E_dao.UserDAO;
 import com.findme.F_exception.NotFoundException;
+import com.findme.F_exception.UnauthorizedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 
@@ -32,6 +35,10 @@ public class UserService {
     private String sqlLoginPassword;
 
     //---------------------------------------------------------------------------------------------------------
+    public User findById(long id) {
+        return userDao.findById(id);
+    }
+
     public User save(User user){
         return userDao.save(user);
     }
@@ -60,13 +67,5 @@ public class UserService {
     //---------------------------------------------- lesson4 hw --------------------------------------------------------
     public User validationLoginPassword(String login, String password) {
         return  userDao.findBySqlLogin(sqlLoginPassword,login,password);
-    }
-
-    //---------------------------------------------- lesson2 hw --------------------------------------------------------
-    public User findById(long id) throws NotFoundException {
-        User user = userDao.findById(id);
-        if(user == null)
-            throw new NotFoundException("Not profile");
-        return user;
     }
 }

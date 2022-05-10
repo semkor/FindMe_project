@@ -65,16 +65,12 @@
 <!--            кнопка посмотреть сколько отправлено заявок-->
                 <button type="click" id="outcome">outcome</button>
 
-<!--            форма добавить друга-->
+<!--            форма отправить запрос на дружбу -->
                 <form id = "addFriend">
                     <table>
                         <tr>
-                            <th><b>userFromId:</b> </th>
-                            <th><input type="text" name="userFromId"/></th>
-                        </tr>
-                        <tr>
                             <th><b>UserToId:</b> </th>
-                            <th><input type="text" name="userToId"/></th>
+                            <th><input type="text" id = "userToId" name="userToId"/></th>
                         </tr>
                     </table>
                     <input type= "submit" value="addFriend"/>
@@ -84,16 +80,12 @@
                 <form id = "updateFriend">
                     <table>
                         <tr>
-                            <th><b>userFromId:</b> </th>
-                            <th><input type="text" name="userFromId"/></th>
-                        </tr>
-                        <tr>
                             <th><b>userToId:</b> </th>
-                            <th><input type="text" name="userToId"/></th>
+                            <th><input id="userToIdUpdate" type="text" name="userToId"/></th>
                         </tr>
                         <tr>
                             <th><b>Status:</b> </th>
-                            <th><input type="text" name="status"/></th>
+                            <th><input id="statusUpdate" type="text" name="status"/></th>
                         </tr>
                     </table>
                     <input type= "submit" value="updateFriend"/>
@@ -194,7 +186,7 @@
                 type: "POST",
                 url: "/add",
                 async: false,
-                data: $(this).serialize(),
+                data: { userToId : document.getElementById('userToId').value},
                 success: function(results) {
                     alert(results);
                 },
@@ -208,7 +200,8 @@
                 type: "PUT",
                 url: "/update",
                 async: false,
-                data: $(this).serialize(),
+                data: { userToIdUpdate : document.getElementById('userToIdUpdate').value,
+                        statusUpdate   : document.getElementById('statusUpdate').value},
                 success: function(results) {
                     alert(results);
                 },

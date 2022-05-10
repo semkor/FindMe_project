@@ -6,7 +6,7 @@ import com.findme.E_dao.PostDAO;
 import com.findme.E_dao.RelationshipDAO;
 import com.findme.E_dao.UserDAO;
 import com.findme.F_exception.BadRequestException;
-import com.findme.F_exception.InternalServerError;
+import com.findme.F_exception.InternalServerException;
 import com.findme.B_models.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -51,7 +51,7 @@ public class PostService {
     }
 
     //добавление всех данных и сохранение
-    public Post createPost(String message, String location, String idUserPosted, String userPagePosted) throws BadRequestException, InternalServerError {
+    public Post createPost(String message, String location, String idUserPosted, String userPagePosted) throws BadRequestException, InternalServerException {
         Post post = new Post();
         post.setMessage(message);
         post.setLocation(location);

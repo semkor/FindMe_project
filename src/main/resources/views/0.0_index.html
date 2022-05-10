@@ -38,6 +38,7 @@
                 data: $(this).serialize(),
                 success: function(results) {
                     alert(results);
+                    window.location.href = '/user';
                 },
                 error: function error(xhr) {
                     alert(xhr.responseText);

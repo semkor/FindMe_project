@@ -1,9 +1,10 @@
 package com.findme.C_controller;
 
-import com.findme.B_models.Relationship;
+import com.findme.AA_ENUM.Status;
 import com.findme.B_models.User;
 import com.findme.D_service.RelationshipService;
 import com.findme.F_exception.BadRequestException;
+import com.findme.F_exception.UnauthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
+import javax.servlet.http.HttpSession;
 import java.util.List;
+
+
 
 @Controller
 public class RelationshipController {
@@ -29,28 +32,29 @@ public class RelationshipController {
     //---------------------------- lesson5/6_hw (добавление/обновление друзей ) ----------------------------------------
     //  - AJAX - возваращает список друзей  - (если сессии нет - из - за getSessionId() будет 404 ошибка)
     @GetMapping(value="/allFriends")
-    public ResponseEntity<List<User>> Friends(){
-        return new ResponseEntity<List<User>> (relService.friends(getSessionId()), HttpStatus.OK);
+    public ResponseEntity<List<User>> Friends(HttpSession session) throws UnauthorizedException {
+        return new ResponseEntity<List<User>> (relService.friends(getSessionId(session)), HttpStatus.OK);
     }
 
     // - AJAX - возвращает список кто мне отправил запрос
     @GetMapping(value="/incomeRequest")
-    public ResponseEntity<List<User>> getIncomeRequests(){
-        return new ResponseEntity<List<User>> (relService.incomeRequests(getSessionId()), HttpStatus.OK);
+    public ResponseEntity<List<User>> getIncomeRequests(HttpSession session)  throws UnauthorizedException {
+        return new ResponseEntity<List<User>> (relService.incomeRequests(getSessionId(session)), HttpStatus.OK);
     }
 
     // - AJAX - возвращает список кому я отправил запрос
     @GetMapping(value="/outcomeRequest")
-    public ResponseEntity<List<User>> getOutcomeRequests (){
-        return new ResponseEntity<List<User>> (relService.outcomeRequests(getSessionId()), HttpStatus.OK);
+    public ResponseEntity<List<User>> getOutcomeRequests (HttpSession session) throws UnauthorizedException {
+        return new ResponseEntity<List<User>> (relService.outcomeRequests(getSessionId(session)), HttpStatus.OK);
     }
 
     // - AJAX - отправка заявки на дружбу
     @PostMapping(value="/add")
-    public ResponseEntity<String>  addRelationoship (@ModelAttribute Relationship reship){
-    log.info("addRelationship: " + " UserFromId = " + reship.getUserFromId() + " UserToId = "+ reship.getUserToId());
+    public ResponseEntity<String>  addRelationship(HttpSession session, @RequestParam("userToId") String userToId)
+                                                    throws UnauthorizedException {
+    log.info("addRelationship: " + " UserFromId = " + getSessionId(session) + " UserToId = "+ userToId);
             try {
-                relService.addRelationoship(reship.getUserFromId(), reship.getUserToId());
+                relService.addRelationship(getSessionId(session), userToId);
             }catch (BadRequestException e){
                 return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
             }
@@ -59,21 +63,20 @@ public class RelationshipController {
 
     // - AJAX - обновить заявку на дружбу
     @PutMapping(value="/update")
-    public ResponseEntity<String>  updateRelationship (@ModelAttribute Relationship reship){
-        log.info("updateRelationship: " + " UserFromId = " + reship.getUserFromId() + " UserToId = "+ reship.getUserToId() +
-                " Status = " + reship.getStatus());
+    public ResponseEntity<String>  updateRelationship
+            (HttpSession session, @RequestParam("userToIdUpdate") String userToId, @RequestParam("statusUpdate") Status status)
+            throws UnauthorizedException {
+        log.info("updateRelationship: " + " UserToId = "+ userToId + " Status = " + status);
             try {
-                relService.updateRelationship (reship.getUserFromId(), reship.getUserToId(), reship.getStatus());
+                relService.updateRelationship (getSessionId(session), userToId, status);
             }catch (BadRequestException e){
-                log.error("Error /update_BadRequestException ", e);
                 return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
             }
         return new ResponseEntity<String>("Application completed", HttpStatus.OK);
     }
 
-
     //=============================================== vault ============================================================
-    private String getSessionId(){
-        return userController.getSessionId();
+    private String getSessionId(HttpSession session) throws UnauthorizedException {
+        return userController.getSessionId(session);
     }
 }

@@ -4,6 +4,7 @@ import com.findme.B_models.User;
 import com.findme.D_service.PostService;
 import com.findme.D_service.UserService;
 import com.findme.F_exception.NotFoundException;
+import com.findme.F_exception.UnauthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ import java.util.Date;
 public class UserController {
     private UserService userService;
     private PostService postService;
-    private HttpSession sessionClass;
+
     private final String sessionLogin = "userId";
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
@@ -34,7 +35,6 @@ public class UserController {
    //-------------------------------------  первичная страница  (логин & пароль) ---------------------------------------
     @GetMapping(value="/")
     public String home() {
-            log.info("Запуск стартовой страницы");
         return "0.0_index";
     }
 
@@ -78,13 +78,6 @@ public class UserController {
     }
 
     //-------------------------------------- lesson4_hw (вход и запуск сессии) -----------------------------------------
-    //TODO - AJAX  при отправлении формы проверяет есть такой логин и пароль
-    //            - если есть:
-    //                  - открывает сессию
-    //            - если нет:
-    //                  - выдает ошибку
-    //     - Thymeleaf перекидывает на страницу профиля по id
-
     //проверка логина и пароля через AJAX - открытие сессиии
     @PostMapping(value="/login")
     public ResponseEntity<String> login(HttpSession session, @ModelAttribute User user){
@@ -93,55 +86,35 @@ public class UserController {
         if(userBase == null)
             return new ResponseEntity<String>("Invalid login or password", HttpStatus.BAD_REQUEST);
 
-        sessionClass = session;
-        String sessionId = (String) sessionClass.getAttribute(sessionLogin);
-
-        if (sessionId == null){
+        String sessionId = (String) session.getAttribute(sessionLogin);
+        if (sessionId == null)
             sessionId = String.valueOf(userBase.getId());
-        }
 
-        sessionClass.setAttribute(sessionLogin,sessionId);
-        return new ResponseEntity<String>("User with this login exists", HttpStatus.OK);
+        session.setAttribute(sessionLogin,sessionId);
+        return new ResponseEntity<String>("Hello!!!", HttpStatus.OK);
     }
-
-    // при успешном открытии сессии  нужно сразу перекинуть на страницу профиля
-    // TODO можно без посредников перекидывать на /user - который выдаст страницу по id session
-    @GetMapping (value="/login-valid")
-    public String login(){
-        System.out.println("cделал редирект");
-        return "5.2_page404";
-    }
-
 
     //выход из сессии
     @GetMapping(value="/logout")
-    public String logout(@ModelAttribute User user){
-            sessionClass.invalidate();
+    public String logout(HttpSession session, @ModelAttribute User user){
+            session.invalidate();
         return "redirect:/";
     }
 
-//    --------------------------- lesson2_hw  (запускаем профиль  с данными по его ID) ---------------------------------
+    //---------------------------- lesson2_hw  (запускаем профиль  с данными по его ID) --------------------------------
     @GetMapping(value="/user")
-    public String profile(Model model){
-        try {
-            User user = userService.findById(Long.parseLong(getSessionId()));
+    public String profile(HttpSession session, Model model) throws UnauthorizedException, NotFoundException {
+            User user = userService.findById(Long.parseLong(getSessionId(session)));
             model.addAttribute("userModel", user);
-            model.addAttribute("postList", postService.allPost(getSessionId()));        // c lesson 7.2
-        }catch(NotFoundException | NumberFormatException e){
-            log.error("profile_Error_NotFoundException | NumberFormatException",e);
-            return "5.2_page404";
-        }catch(Exception e){
-            log.error("profile_Error_Exception",e);
-            return "5.3_page500";
-        }
+            model.addAttribute("postList", postService.allPost(getSessionId(session)));              // c lesson 7.2
         return "2.0_profile";
     }
 
     //=============================================== vault ============================================================
-    //TODO  нужно, чтобы в этом методе обрабатывалась ошибка и выдавала 404 ошибку, если сессия не открыта
-    public String getSessionId (){
-            if (sessionClass == null)
-                return "page404";
-        return (String) sessionClass.getAttribute(sessionLogin);
+    public String getSessionId(HttpSession session) throws UnauthorizedException {
+        String sessionId = (String) session.getAttribute(sessionLogin);
+        if(sessionId == null)
+                throw new UnauthorizedException("Session failed");
+        return sessionId;
     }
 }

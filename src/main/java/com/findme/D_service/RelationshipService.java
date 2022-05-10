@@ -69,7 +69,7 @@ public class RelationshipService {
 
     // добавление связи между User (из NOT FRIENDS - REQUEST, для FORMER_FRIENDS,REQUESR_DENIED  - REQUEST - на updateRelationship)
                             // по сути метод можно выкинуть и все добавить  в updateRelationship c помощью дополнительного Handler
-    public void addRelationoship (String userIdFrom, String userIdTo) throws BadRequestException {
+    public void addRelationship (String userIdFrom, String userIdTo) throws BadRequestException {
                                         //проверка количества оптравленных запросов (допустимо - 10)
         if(relDAO.findByIntRequest(sqlRequestCount, userIdFrom) >= 10)
             throw new BadRequestException("more than 10 applications");
