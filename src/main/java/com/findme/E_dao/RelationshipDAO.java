@@ -83,8 +83,4 @@ public class RelationshipDAO {
                 .setParameter(2, firstArgument)
                 .getResultList();
     }
-
-
-
-
 }

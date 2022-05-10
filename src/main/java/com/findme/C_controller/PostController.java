@@ -1,10 +1,12 @@
 package com.findme.C_controller;
 
 import com.findme.B_models.Post;
-import com.findme.C_controller.UserController;
+
 import com.findme.D_service.PostService;
 import com.findme.F_exception.BadRequestException;
 import com.findme.F_exception.InternalServerError;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,7 @@ import java.util.TreeSet;
 public class PostController {
     private PostService postService;
     private UserController userController;
+    private static final Logger log = LoggerFactory.getLogger(PostController.class);
 
     @Autowired
     public PostController(PostService postService, UserController userController) {
@@ -31,6 +34,7 @@ public class PostController {
     @PostMapping (value="/createPost")
     public ResponseEntity<String> addPost(@RequestParam("message") String message, @RequestParam("location") String location,
                                           @RequestParam("userPagePosted") String userPagePosted){
+    log.info("Post add: " + " message = " + message + " location = "+ location + "userPagePosted = "+  userPagePosted);
         try {
             if (message == null && location == null && userPagePosted == null)
                 throw new BadRequestException("Post is Empty");
@@ -40,8 +44,10 @@ public class PostController {
             postService.createPost(message, location, getSessionId(), userPagePosted);
             return new ResponseEntity<>("Post added successfully", HttpStatus.OK);
         }catch (BadRequestException e){
+            log.error("Error /createPost_BadRequestException ", e);
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }catch (InternalServerError e){
+            log.error("Error /createPost_InternalServerError ", e);
             return new ResponseEntity<>("Server issues", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -49,6 +55,7 @@ public class PostController {
     // лайки под постом
     @GetMapping (value="/lovePost")
     public ResponseEntity<String> lovePost(@RequestParam("post") String postId){
+    log.info("Like add. Argument: " + " location = "+ postId);
             postService.saveLike(getSessionId(), postId);
         return new ResponseEntity<String>("Like successfully",HttpStatus.OK);
     }

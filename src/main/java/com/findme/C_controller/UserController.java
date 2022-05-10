@@ -4,6 +4,8 @@ import com.findme.B_models.User;
 import com.findme.D_service.PostService;
 import com.findme.D_service.UserService;
 import com.findme.F_exception.NotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,7 @@ public class UserController {
     private PostService postService;
     private HttpSession sessionClass;
     private final String sessionLogin = "userId";
+    private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
 
     @Autowired
@@ -31,7 +34,7 @@ public class UserController {
    //-------------------------------------  первичная страница  (логин & пароль) ---------------------------------------
     @GetMapping(value="/")
     public String home() {
-            System.out.println("запускается стартовая страница");
+            log.info("Запуск стартовой страницы");
         return "0.0_index";
     }
 
@@ -105,7 +108,8 @@ public class UserController {
     // TODO можно без посредников перекидывать на /user - который выдаст страницу по id session
     @GetMapping (value="/login-valid")
     public String login(){
-        return "redirect:/user";
+        System.out.println("cделал редирект");
+        return "5.2_page404";
     }
 
 
@@ -124,8 +128,10 @@ public class UserController {
             model.addAttribute("userModel", user);
             model.addAttribute("postList", postService.allPost(getSessionId()));        // c lesson 7.2
         }catch(NotFoundException | NumberFormatException e){
+            log.error("profile_Error_NotFoundException | NumberFormatException",e);
             return "5.2_page404";
         }catch(Exception e){
+            log.error("profile_Error_Exception",e);
             return "5.3_page500";
         }
         return "2.0_profile";

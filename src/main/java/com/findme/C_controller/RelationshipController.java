@@ -4,6 +4,8 @@ import com.findme.B_models.Relationship;
 import com.findme.B_models.User;
 import com.findme.D_service.RelationshipService;
 import com.findme.F_exception.BadRequestException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import java.util.List;
 public class RelationshipController {
     private RelationshipService relService;
     private UserController userController;
+    private static final Logger log = LoggerFactory.getLogger(RelationshipController.class);
 
     @Autowired
     public RelationshipController(RelationshipService relService, UserController userController) {
@@ -45,6 +48,7 @@ public class RelationshipController {
     // - AJAX - отправка заявки на дружбу
     @PostMapping(value="/add")
     public ResponseEntity<String>  addRelationoship (@ModelAttribute Relationship reship){
+    log.info("addRelationship: " + " UserFromId = " + reship.getUserFromId() + " UserToId = "+ reship.getUserToId());
             try {
                 relService.addRelationoship(reship.getUserFromId(), reship.getUserToId());
             }catch (BadRequestException e){
@@ -56,10 +60,12 @@ public class RelationshipController {
     // - AJAX - обновить заявку на дружбу
     @PutMapping(value="/update")
     public ResponseEntity<String>  updateRelationship (@ModelAttribute Relationship reship){
-        System.out.println(reship);
+        log.info("updateRelationship: " + " UserFromId = " + reship.getUserFromId() + " UserToId = "+ reship.getUserToId() +
+                " Status = " + reship.getStatus());
             try {
                 relService.updateRelationship (reship.getUserFromId(), reship.getUserToId(), reship.getStatus());
             }catch (BadRequestException e){
+                log.error("Error /update_BadRequestException ", e);
                 return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
             }
         return new ResponseEntity<String>("Application completed", HttpStatus.OK);
