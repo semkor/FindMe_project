@@ -1,6 +1,5 @@
-package com.findme.E_dao;
+package com.findme.HW;
 
-import com.findme.B_models.Message;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
@@ -33,7 +32,4 @@ public class MessageDAO {
     public void delete(long id) {
         entityManager.remove(findById(id));
     }
-
-    //---------------------------------------------------------------------------------------------------------
-
 }

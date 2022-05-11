@@ -103,10 +103,10 @@ public class UserController {
 
     //---------------------------- lesson2_hw  (запускаем профиль  с данными по его ID) --------------------------------
     @GetMapping(value="/user")
-    public String profile(HttpSession session, Model model) throws UnauthorizedException, NotFoundException {
-            User user = userService.findById(Long.parseLong(getSessionId(session)));
-            model.addAttribute("userModel", user);
-            model.addAttribute("postList", postService.allPost(getSessionId(session)));              // c lesson 7.2
+    public String profile(HttpSession session, Model model) throws UnauthorizedException {
+            String sessionId = getSessionId(session);
+            model.addAttribute("userModel", userService.findById(Long.parseLong(sessionId)));
+            model.addAttribute("postList", postService.allPost(sessionId));                         // c lesson 7.2
         return "2.0_profile";
     }
 

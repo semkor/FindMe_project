@@ -1,16 +1,18 @@
-package com.findme.F_exception;
+package com.findme.HW;
 
+import com.findme.F_exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
 
 @ControllerAdvice
-public class AllException {
-    private final static Logger log = LoggerFactory.getLogger(AllException.class);
-
+public class A_GloballException {
+    private final static Logger log = LoggerFactory.getLogger(A_GloballException.class);
 
     //400 - не правильный / не корректный запрос
     @ExceptionHandler(value = BadRequestException.class)
@@ -46,6 +48,13 @@ public class AllException {
             ModelAndView modelAndView = new ModelAndView("5.4_page500");
             modelAndView.addObject("error", internalServer.getMessage());
         return modelAndView;
+    }
+
+    // 412 - условие ложно
+    @ExceptionHandler(LimitationException.class)
+    public ResponseEntity<String> limitationExceptionHandler(LimitationException limit) {
+            log.error("LimitationException:  ", limit.getStackTrace());
+        return new ResponseEntity<String>(limit.getMessage(), HttpStatus.PRECONDITION_FAILED);
     }
 
     // - остальные все ошибки

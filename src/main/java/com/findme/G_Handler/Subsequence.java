@@ -5,6 +5,7 @@ import com.findme.B_models.Relationship;
 import com.findme.D_service.RelationshipService;
 import com.findme.E_dao.RelationshipDAO;
 import com.findme.F_exception.BadRequestException;
+import com.findme.F_exception.LimitationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,7 +26,7 @@ public class Subsequence {
         this.relationshipDAO = relationshipDAO;
     }
 
-    public void sequence(Relationship relationship, Status status) throws BadRequestException {
+    public void sequence(Relationship relationship, Status status) throws LimitationException {
             requestHandler.setNextHandler(friendsHandler, relationshipDAO);
             friendsHandler.setNextHandler(formerFriends, relationshipDAO);
             formerFriends.setNextHandler(requestDeniedHandler, relationshipDAO);

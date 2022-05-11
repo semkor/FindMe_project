@@ -1,4 +1,6 @@
-package com.findme.B_models;
+package com.findme.HW;
+
+import com.findme.B_models.User;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -9,21 +11,27 @@ public class Message {
     private Long id;
     private String text;
     private Date dateSent;
+    private Date dateEdited;
     private Date dateRead;
-    private User userTo;
+    private Date dateDeleted;
     private User userFrom;
+    private User userTo;
+    private boolean conditionMessage;
 
     //------------------------------------------------------------------------------------------------------------------
     public Message() {
     }
 
-    public Message(Long id, String text, Date dateSent, Date dateRead, User userTo, User userFrom) {
+    public Message(Long id, String text, Date dateSent, Date dateEdited, Date dateRead, Date dateDeleted, User userFrom, User userTo, boolean conditionMessage) {
         this.id = id;
         this.text = text;
         this.dateSent = dateSent;
+        this.dateEdited = dateEdited;
         this.dateRead = dateRead;
-        this.userTo = userTo;
+        this.dateDeleted = dateDeleted;
         this.userFrom = userFrom;
+        this.userTo = userTo;
+        this.conditionMessage = conditionMessage;
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -34,7 +42,7 @@ public class Message {
         return id;
     }
 
-    @Column(name = "TEXT")
+    @Column(name = "TEXTS")
     public String getText() {
         return text;
     }
@@ -44,15 +52,19 @@ public class Message {
         return dateSent;
     }
 
+    @Column(name = "DATE_EDITED")
+    public Date getDateEdited() {
+        return dateEdited;
+    }
+
     @Column(name = "DATE_READ")
     public Date getDateRead() {
         return dateRead;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "USER_TO")
-    public User getUserTo() {
-        return userTo;
+    @Column(name = "DATE_DELETED")
+    public Date getDateDeleted() {
+        return dateDeleted;
     }
 
     @ManyToOne
@@ -61,9 +73,18 @@ public class Message {
         return userFrom;
     }
 
+    @ManyToOne
+    @JoinColumn(name = "USER_TO")
+    public User getUserTo() {
+        return userTo;
+    }
+
+    @Column(name = "CONDITION_MESSAGE")
+    public boolean isConditionMessage() {
+        return conditionMessage;
+    }
 
     //------------------------------------------------------------------------------------------------------------------
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -76,16 +97,28 @@ public class Message {
         this.dateSent = dateSent;
     }
 
+    public void setDateEdited(Date dateEdited) {
+        this.dateEdited = dateEdited;
+    }
+
     public void setDateRead(Date dateRead) {
         this.dateRead = dateRead;
+    }
+
+    public void setDateDeleted(Date dateDeleted) {
+        this.dateDeleted = dateDeleted;
+    }
+
+    public void setUserFrom(User userFrom) {
+        this.userFrom = userFrom;
     }
 
     public void setUserTo(User userTo) {
         this.userTo = userTo;
     }
 
-    public void setUserFrom(User userFrom) {
-        this.userFrom = userFrom;
+    public void setConditionMessage(boolean conditionMessage) {
+        this.conditionMessage = conditionMessage;
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -95,9 +128,12 @@ public class Message {
                 "id=" + id +
                 ", text='" + text + '\'' +
                 ", dateSent=" + dateSent +
+                ", dateEdited=" + dateEdited +
                 ", dateRead=" + dateRead +
-                ", userTo=" + userTo +
+                ", dateDeleted=" + dateDeleted +
                 ", userFrom=" + userFrom +
+                ", userTo=" + userTo +
+                ", conditionMessage=" + conditionMessage +
                 '}';
     }
 }

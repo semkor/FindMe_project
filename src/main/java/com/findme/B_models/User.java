@@ -1,5 +1,7 @@
 package com.findme.B_models;
 
+import com.findme.HW.Message;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -155,6 +157,8 @@ public class User {
     public List<Post> getPostListTagged() {
         return postListTagged;
     }
+
+
 
     @OneToMany (mappedBy = "userTo", cascade = CascadeType.REMOVE,fetch = FetchType.LAZY)
     public List<Message> getMessagesSent() {

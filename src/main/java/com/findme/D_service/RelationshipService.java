@@ -6,6 +6,7 @@ import com.findme.B_models.User;
 import com.findme.E_dao.RelationshipDAO;
 import com.findme.E_dao.UserDAO;
 import com.findme.F_exception.BadRequestException;
+import com.findme.F_exception.LimitationException;
 import com.findme.G_Handler.Subsequence;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -69,10 +70,10 @@ public class RelationshipService {
 
     // добавление связи между User (из NOT FRIENDS - REQUEST, для FORMER_FRIENDS,REQUESR_DENIED  - REQUEST - на updateRelationship)
                             // по сути метод можно выкинуть и все добавить  в updateRelationship c помощью дополнительного Handler
-    public void addRelationship (String userIdFrom, String userIdTo) throws BadRequestException {
+    public void addRelationship (String userIdFrom, String userIdTo) throws LimitationException {
                                         //проверка количества оптравленных запросов (допустимо - 10)
         if(relDAO.findByIntRequest(sqlRequestCount, userIdFrom) >= 10)
-            throw new BadRequestException("more than 10 applications");
+            throw new LimitationException("more than 10 applications");
                                         //проверка на наличие связи userIdFrom - userIdTo или userIdTo - userIdFrom
         if (relDAO.findBySQL(sqlChainUser, userIdFrom,userIdTo) != null)
             updateRelationship(userIdFrom, userIdTo, Status.REQUEST);
@@ -82,7 +83,7 @@ public class RelationshipService {
 
     // обновление статусов, кроме NOT FRIENDS - REQUEST
                 // в Handler    -  обновляем Relationship в базе (заменив статус + дату изменения)
-    public void updateRelationship (String userIdFrom, String userIdTo, Status status) throws BadRequestException {
+    public void updateRelationship (String userIdFrom, String userIdTo, Status status) throws LimitationException {
         Relationship relationship = relDAO.findBySQL(sqlChainUser, userIdFrom,userIdTo);
         subsequence.sequence(relationship, status);
     }

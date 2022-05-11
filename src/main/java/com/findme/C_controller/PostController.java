@@ -5,6 +5,7 @@ import com.findme.B_models.Post;
 import com.findme.D_service.PostService;
 import com.findme.F_exception.BadRequestException;
 import com.findme.F_exception.InternalServerException;
+import com.findme.F_exception.LimitationException;
 import com.findme.F_exception.UnauthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,68 +33,50 @@ public class PostController {
     }
 
     //-------------------------------------------- lesson 7.1 ----------------------------------------------------------
-    // добавление Post
-    @PostMapping (value="/createPost")
-    public ResponseEntity<String> addPost(@RequestParam("message") String message, @RequestParam("location") String location,
-                                          @RequestParam("userPagePosted") String userPagePosted, HttpSession session)
-                                          throws UnauthorizedException {
-    log.info("Post add: " + " message = " + message + " location = "+ location + "userPagePosted = "+  userPagePosted);
-        try {
+    @PostMapping (value="/createPost")      // добавление Post
+    public ResponseEntity<String> addPost(@RequestParam("message") String message, @RequestParam("location") String location, @RequestParam("userPagePosted") String userPagePosted, HttpSession session)
+                                          throws UnauthorizedException, LimitationException {
+            log.info("Post add: " + " message = " + message + " location = "+ location + "userPagePosted = "+  userPagePosted);
             if (message == null && location == null && userPagePosted == null)
-                throw new BadRequestException("Post is Empty");
+                throw new LimitationException("Post is Empty");
             postService.validMessagePosted(message);
             postService.validLocationPosted(getSessionId(session), userPagePosted);
-
             postService.createPost(message, location, getSessionId(session), userPagePosted);
-            return new ResponseEntity<>("Post added successfully", HttpStatus.OK);
-        }catch (BadRequestException e){
-            log.error("Error /createPost_BadRequestException ", e);
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }catch (InternalServerException e){
-            log.error("Error /createPost_InternalServerError ", e);
-            return new ResponseEntity<>("Server issues", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return new ResponseEntity<>("Post added successfully", HttpStatus.OK);
     }
 
-    // лайки под постом
-    @GetMapping (value="/lovePost")
+    @GetMapping (value="/lovePost")         // лайки под постом
     public ResponseEntity<String> lovePost(HttpSession session, @RequestParam("post") String postId) throws UnauthorizedException {
     log.info("Like add. Argument: " + " location = "+ postId);
             postService.saveLike(getSessionId(session), postId);
         return new ResponseEntity<String>("Like successfully",HttpStatus.OK);
     }
 
-
     //-------------------------------------------- lesson 7.2 ----------------------------------------------------------
-    // все мои посты
-    @GetMapping(value = "/allMyPost")
+    @GetMapping(value = "/allMyPost")       // все мои посты
     public ResponseEntity<TreeSet<Post>> allMyPost(HttpSession session)  throws UnauthorizedException {
         return new ResponseEntity<TreeSet<Post>>(postService.allMyPost(getSessionId(session)), HttpStatus.OK);
     }
 
-    // все посты моих друзей
-    @GetMapping(value = "/allFriendsPost")
+    @GetMapping(value = "/allFriendsPost")  // все посты моих друзей
     public ResponseEntity<TreeSet<Post>> allFriendsPost(HttpSession session)  throws UnauthorizedException {
         return new ResponseEntity<TreeSet<Post>>(postService.allFriendsPost(getSessionId(session)), HttpStatus.OK);
     }
 
-    // все посты по Id User
-    @GetMapping(value = "/allIdUserPost")
+    @GetMapping(value = "/allIdUserPost")   // все посты по Id User
     public ResponseEntity<TreeSet<Post>> allIdUserPost(HttpSession session, @RequestParam String idUserPost)  throws UnauthorizedException {
         getSessionId(session);
         return new ResponseEntity<TreeSet<Post>>(postService.allIdUserPost(idUserPost), HttpStatus.OK);
     }
 
     //-------------------------------------------- lesson 8 ------------------------------------------------------------
-    // посты всех друзей (от самых новых до самых старых) - первые 10
-    @GetMapping(value = "/feed")
+    @GetMapping(value = "/feed")            // посты всех друзей (от самых новых до самых старых) - первые 10
     public String feed(HttpSession session, Model model) throws UnauthorizedException {
         model.addAttribute("postList",postService.feedLimit(getSessionId(session)));
         return "3.0_feed";
     }
 
-    // посты всех друзей (от самых новых до самых старых) - первые 5 + 10 новых
-    @GetMapping(value = "/moreFeed")
+    @GetMapping(value = "/moreFeed")        // посты всех друзей (от самых новых до самых старых) - первые 5 + 10 новых
     public String moreFeed(HttpSession session, Model model) throws UnauthorizedException {
         model.addAttribute("postList",postService.feedLimit(getSessionId(session)));
         return "3.0_feed";

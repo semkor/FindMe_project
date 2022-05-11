@@ -4,6 +4,7 @@ import com.findme.AA_ENUM.Status;
 import com.findme.B_models.Relationship;
 import com.findme.E_dao.RelationshipDAO;
 import com.findme.F_exception.BadRequestException;
+import com.findme.F_exception.LimitationException;
 import org.springframework.stereotype.Component;
 import java.util.Date;
 
@@ -19,7 +20,7 @@ public abstract class Handler {
     }
 
     //------------------------------------------------------------------------------------------------------------------
-    public void  setStatus (Relationship relationship, Status status) throws BadRequestException{
+    public void  setStatus (Relationship relationship, Status status) throws LimitationException {
         status (relationship, status);
         if(nextHandler != null){
             nextHandler.setStatus(relationship, status);
@@ -27,7 +28,7 @@ public abstract class Handler {
     }
 
     //------------------------------------------------------------------------------------------------------------------
-    abstract void status (Relationship relationship, Status status) throws BadRequestException;
+    abstract void status (Relationship relationship, Status status) throws LimitationException ;
 
     public void finishHandler(Relationship relationship){
         relationship.setDateChangeStatus(new Date());

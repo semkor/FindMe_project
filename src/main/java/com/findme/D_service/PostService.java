@@ -5,9 +5,8 @@ import com.findme.B_models.User;
 import com.findme.E_dao.PostDAO;
 import com.findme.E_dao.RelationshipDAO;
 import com.findme.E_dao.UserDAO;
-import com.findme.F_exception.BadRequestException;
-import com.findme.F_exception.InternalServerException;
 import com.findme.B_models.Post;
+import com.findme.F_exception.LimitationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -37,27 +36,27 @@ public class PostService {
 
     //-------------------------------------------- lesson 7.1 ----------------------------------------------------------
     // проверка наявности ссылки в тексте
-    public boolean validMessagePosted(String message) throws BadRequestException {
+    public boolean validMessagePosted(String message) throws LimitationException {
         if (message.contains("http:") || message.contains("https:") || message.contains("www."))
-            throw new BadRequestException("Message cannot contain a link");
+            throw new LimitationException("Message cannot contain a link");
         return true;
     }
 
     //проверка на своей странице или нет, друзья или нет
-    public boolean validLocationPosted(String userFromId, String userToId) throws BadRequestException {
+    public boolean validLocationPosted(String userFromId, String userToId) throws LimitationException {
         if (!userFromId.equals(userToId) && relDAO.findBySQL(sqlChainUserFriends, userFromId, userToId) == null)
-            throw new BadRequestException("You can post only to yourself and friends");
+            throw new LimitationException("You can post only to yourself and friends");
         return true;
     }
 
     //добавление всех данных и сохранение
-    public Post createPost(String message, String location, String idUserPosted, String userPagePosted) throws BadRequestException, InternalServerException {
+    public Post createPost(String message, String location, String idUserPosted, String userPagePosted) {
         Post post = new Post();
-        post.setMessage(message);
-        post.setLocation(location);
-        post.setDatePosted(new Date());
-        post.setUserPosted(userDAO.findById(Long.parseLong(idUserPosted)));
-        post.setUserPagePosted(userDAO.findById(Long.parseLong(userPagePosted)));
+            post.setMessage(message);
+            post.setLocation(location);
+            post.setDatePosted(new Date());
+            post.setUserPosted(userDAO.findById(Long.parseLong(idUserPosted)));
+            post.setUserPagePosted(userDAO.findById(Long.parseLong(userPagePosted)));
         return postDAO.save(post);
     }
 
@@ -74,15 +73,15 @@ public class PostService {
     // все посты + посты друзей
     public TreeSet<Post> allPost(String userPageId) {
         TreeSet<Post> posts = new TreeSet<>();
-        posts.addAll(allMyPost(userPageId));
-        posts.addAll(allFriendsPost(userPageId));
+            posts.addAll(allMyPost(userPageId));
+            posts.addAll(allFriendsPost(userPageId));
         return posts;
     }
 
     // все мои посты
     public TreeSet<Post> allMyPost(String userPageId) {
         TreeSet<Post> posts = new TreeSet<>();
-        posts.addAll(userDAO.findById(Long.parseLong(userPageId)).getPostList());
+            posts.addAll(userDAO.findById(Long.parseLong(userPageId)).getPostList());
         return posts;
     }
 
@@ -93,7 +92,7 @@ public class PostService {
         if (list != null) {
             for (Relationship el : list) {
                 if (el.getUserFromId().equals(userPageId))
-                    posts.addAll(userDAO.findById(Long.parseLong(el.getUserToId())).getPostList());
+                        posts.addAll(userDAO.findById(Long.parseLong(el.getUserToId())).getPostList());
                 else
                     posts.addAll(userDAO.findById(Long.parseLong(el.getUserFromId())).getPostList());
             }

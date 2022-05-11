@@ -4,6 +4,7 @@ import com.findme.AA_ENUM.Status;
 import com.findme.B_models.User;
 import com.findme.D_service.RelationshipService;
 import com.findme.F_exception.BadRequestException;
+import com.findme.F_exception.LimitationException;
 import com.findme.F_exception.UnauthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,28 +51,17 @@ public class RelationshipController {
 
     // - AJAX - отправка заявки на дружбу
     @PostMapping(value="/add")
-    public ResponseEntity<String>  addRelationship(HttpSession session, @RequestParam("userToId") String userToId)
-                                                    throws UnauthorizedException {
-    log.info("addRelationship: " + " UserFromId = " + getSessionId(session) + " UserToId = "+ userToId);
-            try {
-                relService.addRelationship(getSessionId(session), userToId);
-            }catch (BadRequestException e){
-                return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
-            }
+    public ResponseEntity<String>  addRelationship(HttpSession session, @RequestParam("userToId") String userToId) throws UnauthorizedException, LimitationException {
+            log.info("addRelationship: " + " UserFromId = " + getSessionId(session) + " UserToId = "+ userToId);
+            relService.addRelationship(getSessionId(session), userToId);
         return new ResponseEntity<String>("Application sent", HttpStatus.OK);
     }
 
     // - AJAX - обновить заявку на дружбу
     @PutMapping(value="/update")
-    public ResponseEntity<String>  updateRelationship
-            (HttpSession session, @RequestParam("userToIdUpdate") String userToId, @RequestParam("statusUpdate") Status status)
-            throws UnauthorizedException {
-        log.info("updateRelationship: " + " UserToId = "+ userToId + " Status = " + status);
-            try {
-                relService.updateRelationship (getSessionId(session), userToId, status);
-            }catch (BadRequestException e){
-                return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
-            }
+    public ResponseEntity<String>  updateRelationship(HttpSession session, @RequestParam("userToIdUpdate") String userToId, @RequestParam("statusUpdate") Status status) throws UnauthorizedException, LimitationException {
+           log.info("updateRelationship: " + " UserToId = "+ userToId + " Status = " + status);
+           relService.updateRelationship (getSessionId(session), userToId, status);
         return new ResponseEntity<String>("Application completed", HttpStatus.OK);
     }
 
