@@ -56,8 +56,12 @@ public class MessageService {
         return messageGet;
     }
 
-    public void deleteMessage(long id){
+    public void deleteMessage(long id) throws LimitationException{
         Message messageDel = messageDAO.findById(id);
+
+        if(messageDel.isConditionMessage())
+            throw new LimitationException("Post can be deleted until read");
+
             messageDel.setDateDeleted(new Date());
         messageDAO.update(messageDel);
     }

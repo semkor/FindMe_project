@@ -46,7 +46,7 @@ public class MessageController{
     }
 
     @DeleteMapping(value = "/deleteMessage")    // удалить сообщение
-    public ResponseEntity<String>  deleteMessage (HttpSession session, @RequestParam("id") long idMessage) throws UnauthorizedException {
+    public ResponseEntity<String>  deleteMessage (HttpSession session, @RequestParam("id") long idMessage) throws UnauthorizedException, LimitationException {
             getSessionId(session);
             messageService.deleteMessage(idMessage);
         return new ResponseEntity<String> ("Message deleted", HttpStatus.OK);

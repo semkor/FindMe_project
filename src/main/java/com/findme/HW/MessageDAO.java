@@ -28,8 +28,4 @@ public class MessageDAO {
         entityManager.merge(message);
         return message;
     }
-
-    public void delete(long id) {
-        entityManager.remove(findById(id));
-    }
 }
