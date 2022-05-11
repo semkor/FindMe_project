@@ -1,7 +1,5 @@
 package com.findme.B_models;
 
-import com.findme.HW.Message;
-
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;

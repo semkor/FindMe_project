@@ -1,7 +1,7 @@
-package com.findme.HW;
+package com.findme.C_controller;
 
 import com.findme.C_controller.UserController;
-import com.findme.HW.MessageService;
+import com.findme.D_service.MessageService;
 import com.findme.F_exception.LimitationException;
 import com.findme.F_exception.UnauthorizedException;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,5 @@
-package com.findme.HW;
+package com.findme.F_exception;
 
-import com.findme.F_exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

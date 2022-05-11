@@ -1,8 +1,10 @@
-package com.findme.HW;
+package com.findme.D_service;
 
+import com.findme.E_dao.MessageDAO;
 import com.findme.E_dao.RelationshipDAO;
 import com.findme.E_dao.UserDAO;
 import com.findme.F_exception.LimitationException;
+import com.findme.B_models.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -26,7 +28,7 @@ public class MessageService {
     private String sqlFriends;
 
     //------------------------------------------------ lesson11 --------------------------------------------------------
-    public Message sentMessage(String userIdFrom, String userIdTo,  String message) throws LimitationException{
+    public Message sentMessage(String userIdFrom, String userIdTo, String message) throws LimitationException{
             if(relDAO.findBySQL(sqlFriends, userIdFrom, userIdTo) == null)
                 throw new LimitationException("Messages can only be sent to friends");
 

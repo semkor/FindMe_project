@@ -1,4 +1,4 @@
-package com.findme.HW;
+package com.findme.B_models;
 
 import com.findme.B_models.User;
 
