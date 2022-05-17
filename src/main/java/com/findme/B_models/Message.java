@@ -1,6 +1,6 @@
 package com.findme.B_models;
 
-import com.findme.B_models.User;
+import com.findme.HW.StatusMessage;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -16,13 +16,13 @@ public class Message {
     private Date dateDeleted;
     private User userFrom;
     private User userTo;
-    private boolean conditionMessage;
+    private StatusMessage statusMessage;
 
     //------------------------------------------------------------------------------------------------------------------
     public Message() {
     }
 
-    public Message(Long id, String text, Date dateSent, Date dateEdited, Date dateRead, Date dateDeleted, User userFrom, User userTo, boolean conditionMessage) {
+    public Message(Long id, String text, Date dateSent, Date dateEdited, Date dateRead, Date dateDeleted, User userFrom, User userTo, StatusMessage statusMessage) {
         this.id = id;
         this.text = text;
         this.dateSent = dateSent;
@@ -31,7 +31,7 @@ public class Message {
         this.dateDeleted = dateDeleted;
         this.userFrom = userFrom;
         this.userTo = userTo;
-        this.conditionMessage = conditionMessage;
+        this.statusMessage = statusMessage;
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -79,9 +79,10 @@ public class Message {
         return userTo;
     }
 
-    @Column(name = "CONDITION_MESSAGE")
-    public boolean isConditionMessage() {
-        return conditionMessage;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "STATUS_MESSAGE")
+    public StatusMessage getStatusMessage() {
+        return statusMessage;
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -117,8 +118,8 @@ public class Message {
         this.userTo = userTo;
     }
 
-    public void setConditionMessage(boolean conditionMessage) {
-        this.conditionMessage = conditionMessage;
+    public void setStatusMessage(StatusMessage statusMessage) {
+        this.statusMessage = statusMessage;
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -133,7 +134,6 @@ public class Message {
                 ", dateDeleted=" + dateDeleted +
                 ", userFrom=" + userFrom +
                 ", userTo=" + userTo +
-                ", conditionMessage=" + conditionMessage +
                 '}';
     }
 }

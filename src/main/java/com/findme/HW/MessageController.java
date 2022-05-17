@@ -1,7 +1,6 @@
-package com.findme.C_controller;
+package com.findme.HW;
 
 import com.findme.C_controller.UserController;
-import com.findme.D_service.MessageService;
 import com.findme.F_exception.LimitationException;
 import com.findme.F_exception.UnauthorizedException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +49,34 @@ public class MessageController{
             getSessionId(session);
             messageService.deleteMessage(idMessage);
         return new ResponseEntity<String> ("Message deleted", HttpStatus.OK);
+    }
+
+
+    //------------------------------------------------ lesson12 --------------------------------------------------------
+    @GetMapping(value = "/chattingHistory")        // получение по умолчанию 20 сообщений (удаленные сообщения не учитываются)
+    public String  chattingHistory (HttpSession session, @RequestParam("userTo") String userTo, Model model) throws UnauthorizedException {
+            model.addAttribute("chattingHistory", messageService.getChattingHistory(getSessionId(session),userTo));
+        return "4.0_message";
+    }
+
+    @GetMapping(value = "/moreСhattingHistory")        // полуение сообщений 20 + 20 (удаленные сообщения не учитываются)
+    public String moreChattingHistory(HttpSession session, @RequestParam("userTo") String userTo, Model model) throws UnauthorizedException {
+        model.addAttribute("chattingHistory", messageService.getMoreChattingHistory(getSessionId(session),userTo));
+        return "4.0_message";
+    }
+
+    @PutMapping(value = "/updateСhattingHistory")     // удалить одно сообщение, но не более 10 за один раз
+    public ResponseEntity<String>  updateСhattingHistory (HttpSession session, @RequestParam("IdMessage") String[] idMessage) throws UnauthorizedException, LimitationException {
+            getSessionId(session);
+            messageService.deleteHistory(idMessage);
+        return new ResponseEntity<String> ("Chatting message deleted", HttpStatus.OK);
+    }
+
+
+    @PutMapping(value = "/updateAllСhattingHistory")     // удалить всю переписку
+    public ResponseEntity<String>  updateAllСhattingHistory (HttpSession session, @RequestParam("userTo") String userTo) throws UnauthorizedException {
+            messageService.deleteAllHistory(getSessionId(session),userTo);
+        return new ResponseEntity<String> ("Chatting history deleted", HttpStatus.OK);
     }
 
     //=============================================== vault ============================================================
